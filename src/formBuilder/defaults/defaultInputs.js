@@ -1,88 +1,87 @@
 // @flow
-import * as React from "react";
-import { Input } from "reactstrap";
-import Select from "react-select";
-import { createUseStyles } from "react-jss";
-import FBCheckbox from "../checkbox/FBCheckbox";
-import CardEnumOptions from "../CardEnumOptions";
-import type { Parameters } from "../types";
+import * as React from 'react'
+import { Input } from 'reactstrap'
+import Select from 'react-select'
+import { createUseStyles } from 'react-jss'
+import FBCheckbox from '../checkbox/FBCheckbox'
+import CardEnumOptions from '../CardEnumOptions'
+import type { Parameters } from '../types'
 
 const useStyles = createUseStyles({
   hidden: {
-    display: "none",
-  },
-});
+    display: 'none'
+  }
+})
 
 // specify the inputs required for a string type object
 export function CardDefaultParameterInputs() {
-  return <div></div>;
+  return <div />
 }
 
 function TimeField({
   parameters,
-  onChange,
+  onChange
 }: {
   parameters: Parameters,
-  onChange: (newParams: Parameters) => void,
+  onChange: (newParams: Parameters) => void
 }) {
   return (
     <React.Fragment>
       <h5>Default time</h5>
       <Input
-        value={parameters.default || ""}
-        placeholder="Default"
-        type="datetime-local"
+        value={parameters.default || ''}
+        placeholder='Default'
+        type='datetime-local'
         onChange={(ev: SyntheticInputEvent<HTMLInputElement>) =>
           onChange({ ...parameters, default: ev.target.value })
         }
-        className="card-text"
+        className='card-text'
       />
     </React.Fragment>
-  );
+  )
 }
 
 function Checkbox({
   parameters,
-  onChange,
+  onChange
 }: {
   parameters: Parameters,
-  onChange: (newParams: Parameters) => void,
+  onChange: (newParams: Parameters) => void
 }) {
   return (
-    <div className="card-boolean">
+    <div className='card-boolean'>
       <FBCheckbox
         onChangeValue={() => {
           onChange({
             ...parameters,
-            default: parameters.default ? parameters.default !== true : true,
-          });
+            default: parameters.default ? parameters.default !== true : true
+          })
         }}
         isChecked={parameters.default ? parameters.default === true : false}
-        label="Default"
+        label='Default'
       />
     </div>
-  );
+  )
 }
 
 function MultipleChoice({
   parameters,
-  onChange,
+  onChange
 }: {
   parameters: Parameters,
-  onChange: (newParams: Parameters) => void,
+  onChange: (newParams: Parameters) => void
 }) {
-  const classes = useStyles();
-  const enumArray = Array.isArray(parameters.enum) ? parameters.enum : [];
+  const classes = useStyles()
+  const enumArray = Array.isArray(parameters.enum) ? parameters.enum : []
   // eslint-disable-next-line no-restricted-globals
-  const containsUnparsableString = enumArray.some((val) => isNaN(val));
+  const containsUnparsableString = enumArray.some((val) => isNaN(val))
   const containsString =
-    containsUnparsableString ||
-    enumArray.some((val) => typeof val === "string");
+    containsUnparsableString || enumArray.some((val) => typeof val === 'string')
   const [isNumber, setIsNumber] = React.useState(
     !!enumArray.length && !containsString
-  );
+  )
   return (
-    <div className="card-enum">
+    <div className='card-enum'>
       <h3>Possible Values</h3>
       <FBCheckbox
         onChangeValue={() => {
@@ -90,23 +89,23 @@ function MultipleChoice({
             // remove the enumNames
             onChange({
               ...parameters,
-              enumNames: null,
-            });
+              enumNames: null
+            })
           } else {
             // create enumNames as a copy of enum values
             onChange({
               ...parameters,
-              enumNames: enumArray.map((val) => `${val}`),
-            });
+              enumNames: enumArray.map((val) => `${val}`)
+            })
           }
         }}
         isChecked={Array.isArray(parameters.enumNames)}
-        label="Display label is different from value"
+        label='Display label is different from value'
         id={`${parameters.path}_different`}
       />
       <div
         className={
-          containsUnparsableString || !enumArray.length ? classes.hidden : ""
+          containsUnparsableString || !enumArray.length ? classes.hidden : ''
         }
       >
         <FBCheckbox
@@ -115,36 +114,36 @@ function MultipleChoice({
               // attempt converting enum values into numbers
               try {
                 const newEnum = enumArray.map((val) => {
-                  let newNum = 0;
-                  if (val) newNum = parseFloat(val) || 0;
+                  let newNum = 0
+                  if (val) newNum = parseFloat(val) || 0
                   if (Number.isNaN(newNum))
-                    throw new Error(`Could not convert ${val}`);
-                  return newNum;
-                });
-                setIsNumber(true);
+                    throw new Error(`Could not convert ${val}`)
+                  return newNum
+                })
+                setIsNumber(true)
                 onChange({
                   ...parameters,
-                  enum: newEnum,
-                });
+                  enum: newEnum
+                })
               } catch (error) {
                 // eslint-disable-next-line no-console
-                console.error(error);
+                console.error(error)
               }
             } else {
               // convert enum values back into strings
-              const newEnum = enumArray.map((val) => `${val || 0}`);
-              setIsNumber(false);
+              const newEnum = enumArray.map((val) => `${val || 0}`)
+              setIsNumber(false)
               onChange({
                 ...parameters,
-                enum: newEnum,
-              });
+                enum: newEnum
+              })
             }
           }}
           isChecked={isNumber}
           disabled={containsUnparsableString}
-          label="Force number"
+          label='Force number'
           id={`${
-            typeof parameters.path === "string" ? parameters.path : ""
+            typeof parameters.path === 'string' ? parameters.path : ''
           }_forceNumber`}
         />
       </div>
@@ -160,120 +159,120 @@ function MultipleChoice({
           onChange({
             ...parameters,
             enum: newEnum,
-            enumNames: newEnumNames,
+            enumNames: newEnumNames
           })
         }
-        type={isNumber ? "number" : "string"}
+        type={isNumber ? 'number' : 'string'}
       />
     </div>
-  );
+  )
 }
 
 function RefChoice({
   parameters,
-  onChange,
+  onChange
 }: {
   parameters: Parameters,
-  onChange: (newParams: Parameters) => void,
+  onChange: (newParams: Parameters) => void
 }) {
   return (
-    <div className="card-select">
+    <div className='card-select'>
       <Select
         value={{
           value: parameters.$ref,
-          label: parameters.$ref,
+          label: parameters.$ref
         }}
-        placeholder="Reference"
+        placeholder='Reference'
         options={Object.keys(parameters.definitionData || {}).map((key) => ({
           value: `#/definitions/${key}`,
-          label: `#/definitions/${key}`,
+          label: `#/definitions/${key}`
         }))}
         onChange={(val: any) => {
-          onChange({ ...parameters, $ref: val.value });
+          onChange({ ...parameters, $ref: val.value })
         }}
-        className="card-select"
+        className='card-select'
       />
     </div>
-  );
+  )
 }
 
 const defaultInputs = {
   time: {
-    displayName: "Time",
+    displayName: 'Time',
     matchIf: [
       {
-        types: ["string"],
-        format: "date-time",
-      },
+        types: ['string'],
+        format: 'date-time'
+      }
     ],
     defaultDataSchema: {
-      format: "date-time",
+      format: 'date-time'
     },
     defaultUiSchema: {},
-    type: "string",
+    type: 'string',
     cardBody: TimeField,
-    modalBody: CardDefaultParameterInputs,
+    modalBody: CardDefaultParameterInputs
   },
   checkbox: {
-    displayName: "Checkbox",
+    displayName: 'Checkbox',
     matchIf: [
       {
-        types: ["boolean"],
-      },
+        types: ['boolean']
+      }
     ],
     defaultDataSchema: {},
     defaultUiSchema: {},
-    type: "boolean",
+    type: 'boolean',
     cardBody: Checkbox,
-    modalBody: CardDefaultParameterInputs,
+    modalBody: CardDefaultParameterInputs
   },
   ref: {
-    displayName: "Reference",
+    displayName: 'Reference',
     matchIf: [
       {
         types: [null],
-        $ref: true,
-      },
+        $ref: true
+      }
     ],
     defaultDataSchema: {
-      $ref: "",
+      $ref: ''
     },
     defaultUiSchema: {},
     type: null,
     cardBody: RefChoice,
-    modalBody: CardDefaultParameterInputs,
+    modalBody: CardDefaultParameterInputs
   },
   radio: {
-    displayName: "Radio",
+    displayName: 'Radio',
     matchIf: [
       {
-        types: ["string", "number", "integer", "array", "boolean", null],
-        widget: "radio",
-        enum: true,
-      },
+        types: ['string', 'number', 'integer', 'array', 'boolean', null],
+        widget: 'radio',
+        enum: true
+      }
     ],
     defaultDataSchema: { enum: [] },
     defaultUiSchema: {
-      "ui:widget": "radio",
+      'ui:widget': 'radio'
     },
     type: null,
     cardBody: MultipleChoice,
-    modalBody: CardDefaultParameterInputs,
+    modalBody: CardDefaultParameterInputs
   },
   dropdown: {
-    displayName: "Dropdown",
+    displayName: 'Dropdown',
     matchIf: [
       {
-        types: ["string", "number", "integer", "array", "boolean", null],
-        enum: true,
-      },
+        types: ['string', 'number', 'integer', 'array', 'boolean', null],
+        enum: true
+      }
     ],
     defaultDataSchema: { enum: [] },
     defaultUiSchema: {},
     type: null,
     cardBody: MultipleChoice,
-    modalBody: CardDefaultParameterInputs,
-  },
-};
+    modalBody: CardDefaultParameterInputs
+  }
+}
 
-export default defaultInputs;
+export default defaultInputs

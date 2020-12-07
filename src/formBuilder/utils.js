@@ -1,87 +1,87 @@
 // @flow
-import * as React from "react";
-import { safeLoad as yamlParse, safeDump as yamlStringify } from "js-yaml";
-import type { CardProps, ElementProps, FormInput, Mods } from "./types";
+import * as React from 'react'
+import { safeLoad as yamlParse, safeDump as yamlStringify } from 'js-yaml'
+import type { CardProps, ElementProps, FormInput, Mods } from './types'
 
 // parse in either YAML or JSON
 export function parse(text: string, language: string) {
-  if (!text) return {};
-  return language === "yaml" ? (yamlParse(text): any) : (JSON.parse(text): any);
+  if (!text) return {}
+  return language === 'yaml' ? (yamlParse(text): any) : (JSON.parse(text): any)
 }
 
 // stringify in either YAML or JSON
 export function stringify(obj: any, language: string) {
-  if (!obj) return "";
-  return language === "yaml"
+  if (!obj) return ''
+  return language === 'yaml'
     ? yamlStringify(obj, { skipInvalid: true })
-    : JSON.stringify(obj, null, 5);
+    : JSON.stringify(obj, null, 5)
 }
 
 export function defaultDataProps(
   category: string,
   allFormInputs: { [string]: FormInput }
 ) {
-  return allFormInputs[category].defaultDataSchema;
+  return allFormInputs[category].defaultDataSchema
 }
 
 export function defaultUiProps(
   category: string,
   allFormInputs: { [string]: FormInput }
 ) {
-  return allFormInputs[category].defaultUiSchema;
+  return allFormInputs[category].defaultUiSchema
 }
 export function categoryType(
   category: string,
   allFormInputs: { [string]: FormInput }
 ) {
-  return allFormInputs[category].type;
+  return allFormInputs[category].type
 }
 export function getCardBody(
   category: string,
   allFormInputs: { [string]: FormInput }
 ) {
-  return allFormInputs[category].cardBody;
+  return allFormInputs[category].cardBody
 }
 export function categoryToNameMap(
   category: string,
   allFormInputs: { [string]: FormInput }
 ) {
-  const categoryNameMap = {};
+  const categoryNameMap = {}
   Object.keys(allFormInputs).forEach((inputName) => {
-    categoryNameMap[inputName] = allFormInputs[inputName].displayName;
-  });
-  return categoryNameMap;
+    categoryNameMap[inputName] = allFormInputs[inputName].displayName
+  })
+  return categoryNameMap
 }
 
 function updateElementNames(elementArray: Array<ElementProps>) {
-  const elementNames = elementArray.map((elem) => elem.name);
+  const elementNames = elementArray.map((elem) => elem.name)
   return elementArray.map((elem) => {
-    const newElem = elem;
-    newElem.neighborNames = elementNames;
-    return newElem;
-  });
+    const newElem = elem
+    newElem.neighborNames = elementNames
+    return newElem
+  })
 }
 
 export function generateCategoryHash(allFormInputs: { [string]: FormInput }) {
-  const categoryHash = {};
+  const categoryHash = {}
   Object.keys(allFormInputs).forEach((categoryName) => {
-    const formInput = allFormInputs[categoryName];
+    const formInput = allFormInputs[categoryName]
     formInput.matchIf.forEach((match) => {
       match.types.forEach((type) => {
-        const hash = `type:${type || ""};widget:${match.widget || ""};field:${
-          match.field || ""
-        };format:${match.format || ""};$ref:${
-          match.$ref ? "true" : "false"
-        };enum:${match.enum ? "true" : "false"}`;
+        const hash = `type:${type || ''};widget:${match.widget || ''};field:${
+          match.field || ''
+        };format:${match.format || ''};$ref:${
+          match.$ref ? 'true' : 'false'
+        };enum:${match.enum ? 'true' : 'false'}`
         if (categoryHash[hash]) {
-          throw new Error(`Duplicate hash: ${hash}`);
+          throw new Error(`Duplicate hash: ${hash}`)
         }
-        categoryHash[hash] = categoryName;
-      });
-    });
-  });
+        categoryHash[hash] = categoryName
+      })
+    })
+  })
 
-  return categoryHash;
+  return categoryHash
 }
 
 // determines a card's category based on it's properties
@@ -90,61 +90,61 @@ export function getCardCategory(
   cardProps: CardProps,
   categoryHash: { [string]: string }
 ) {
-  const currentHash = `type:${cardProps.dataOptions.type || ""};widget:${
-    cardProps.uiOptions["ui:widget"] || ""
-  };field:${cardProps.uiOptions["ui:field"] || ""};format:${
-    cardProps.dataOptions.format || ""
-  };$ref:${cardProps.$ref !== undefined ? "true" : "false"};enum:${
-    cardProps.dataOptions.enum ? "true" : "false"
-  }`;
-  const category = categoryHash[currentHash];
+  const currentHash = `type:${cardProps.dataOptions.type || ''};widget:${
+    cardProps.uiOptions['ui:widget'] || ''
+  };field:${cardProps.uiOptions['ui:field'] || ''};format:${
+    cardProps.dataOptions.format || ''
+  };$ref:${cardProps.$ref !== undefined ? 'true' : 'false'};enum:${
+    cardProps.dataOptions.enum ? 'true' : 'false'
+  }`
+  const category = categoryHash[currentHash]
   if (!category) {
-    if (cardProps.$ref) return "ref";
+    if (cardProps.$ref) return 'ref'
     // eslint-disable-next-line no-console
-    console.error(`No match for card': ${currentHash} among set`);
-    return "shortAnswer";
+    console.error(`No match for card': ${currentHash} among set`)
+    return 'shortAnswer'
   }
-  return category;
+  return category
 }
 
 // check for unsupported feature in schema and uischema
 const supportedPropertyParameters = new Set([
-  "title",
-  "description",
-  "enum",
-  "minLength",
-  "maxLength",
-  "multipleOf",
-  "minimum",
-  "maximum",
-  "format",
-  "exclusiveMinimum",
-  "exclusiveMaximum",
-  "type",
-  "default",
-  "pattern",
-  "required",
-  "properties",
-  "items",
-  "definitions",
-  "$ref",
-  "minItems",
-  "maxItems",
-  "enumNames",
-  "dependencies",
-  "$id",
-]);
+  'title',
+  'description',
+  'enum',
+  'minLength',
+  'maxLength',
+  'multipleOf',
+  'minimum',
+  'maximum',
+  'format',
+  'exclusiveMinimum',
+  'exclusiveMaximum',
+  'type',
+  'default',
+  'pattern',
+  'required',
+  'properties',
+  'items',
+  'definitions',
+  '$ref',
+  'minItems',
+  'maxItems',
+  'enumNames',
+  'dependencies',
+  '$id'
+])
 
 const supportedUiParameters = new Set([
-  "ui:order",
-  "ui:widget",
-  "ui:autofocus",
-  "ui:autocomplete",
-  "ui:option",
-  "ui:field",
-  "items",
-  "definitions",
-]);
+  'ui:order',
+  'ui:widget',
+  'ui:autofocus',
+  'ui:autocomplete',
+  'ui:option',
+  'ui:field',
+  'items',
+  'definitions'
+])
 
 // recursively called function to check an object for unsupported features
 function checkObjectForUnsupportedFeatures(
@@ -155,96 +155,96 @@ function checkObjectForUnsupportedFeatures(
   supportedOptions: Set<string>
 ) {
   // add each unsupported feature to this array
-  const unsupportedFeatures = [];
+  const unsupportedFeatures = []
 
   // check for unsupported whole object features
-  if (schema && typeof schema === "object")
+  if (schema && typeof schema === 'object')
     Object.keys(schema).forEach((property) => {
       if (
         !supportedPropertyParameters.has(property) &&
-        property !== "properties"
+        property !== 'properties'
       )
-        unsupportedFeatures.push(`Unrecognized Object Property: ${property}`);
-    });
+        unsupportedFeatures.push(`Unrecognized Object Property: ${property}`)
+    })
 
-  if (uischema && typeof uischema === "object")
+  if (uischema && typeof uischema === 'object')
     Object.keys(uischema).forEach((uiProperty) => {
-      let propDefined = false;
+      let propDefined = false
       // search for the property in the schema properties and dependencies
       if (
         schema.properties &&
         Object.keys(schema.properties).includes(uiProperty)
       )
-        propDefined = true;
+        propDefined = true
       if (schema.dependencies) {
         Object.keys(schema.dependencies).forEach((dependencyKey) => {
           Object.keys(schema.dependencies[dependencyKey]).forEach(
             (parameter) => {
-              if (parameter === "oneOf") {
+              if (parameter === 'oneOf') {
                 schema.dependencies[dependencyKey].oneOf.forEach((grouping) => {
                   if (grouping.properties)
                     if (Object.keys(grouping.properties).includes(uiProperty))
-                      propDefined = true;
-                });
-              } else if (parameter === "properties") {
+                      propDefined = true
+                })
+              } else if (parameter === 'properties') {
                 if (
                   Object.keys(
                     schema.dependencies[dependencyKey].properties
                   ).includes(uiProperty)
                 )
-                  propDefined = true;
+                  propDefined = true
               }
             }
-          );
-        });
+          )
+        })
       }
 
       if (!propDefined && !supportedUiParameters.has(uiProperty))
         unsupportedFeatures.push(
           `Unrecognized UI schema property: ${uiProperty}`
-        );
-    });
+        )
+    })
 
   // check for unsupported property parameters
   if (schema.properties)
     Object.entries(schema.properties).forEach(
       ([parameter, element]: [string, any]) => {
-        const correctName = parameter.replace(/\W/g, "_");
+        const correctName = parameter.replace(/\W/g, '_')
         if (parameter !== correctName) {
           unsupportedFeatures.push(
             `Improper name '${parameter}': using '${correctName}' instead`
-          );
+          )
         }
         if (
           element &&
-          typeof element === "object" &&
+          typeof element === 'object' &&
           element.type &&
-          element.type !== "object"
+          element.type !== 'object'
         ) {
           // make sure that the type is valid
           if (
-            !["array", "string", "integer", "number", "boolean"].includes(
+            !['array', 'string', 'integer', 'number', 'boolean'].includes(
               element.type
             )
           )
             unsupportedFeatures.push(
               `Unrecognized type: ${element.type} in ${parameter}`
-            );
+            )
           // check the properties of each property if it is a basic object
           Object.keys(element).forEach((key) => {
             if (!supportedPropertyParameters.has(key))
               unsupportedFeatures.push(
                 `Property Parameter: ${key} in ${parameter}`
-              );
-          });
+              )
+          })
         } else {
           // check the properties of each property if it is a basic object
           Object.keys(element).forEach((key) => {
             if (!supportedPropertyParameters.has(key))
               unsupportedFeatures.push(
                 `Property Parameter: ${key} in ${parameter}`
-              );
-          });
+              )
+          })
         }
 
         // check for unsupported UI components
@@ -252,49 +252,49 @@ function checkObjectForUnsupportedFeatures(
           uischema &&
           uischema[parameter] &&
           element &&
-          (!element.type || element.type !== "object")
+          (!element.type || element.type !== 'object')
         ) {
           // check for unsupported ui properties
           Object.keys(uischema[parameter]).forEach((uiProp) => {
             if (!supportedUiParameters.has(uiProp))
               unsupportedFeatures.push(
                 `UI Property: ${uiProp} for ${parameter}`
-              );
+              )
 
             // check for unsupported ui widgets
             if (
-              uiProp === "ui:widget" &&
+              uiProp === 'ui:widget' &&
               !supportedWidgets.has(uischema[parameter][uiProp])
             ) {
               unsupportedFeatures.push(
                 `UI Widget: ${uischema[parameter][uiProp]} for ${parameter}`
-              );
+              )
             }
 
             // check for unsupported ui fields
             if (
-              uiProp === "ui:field" &&
+              uiProp === 'ui:field' &&
               !supportedFields.has(uischema[parameter][uiProp])
             )
               unsupportedFeatures.push(
                 `UI Field: ${uischema[parameter][uiProp]} for ${parameter}`
-              );
+              )
 
             // check unsupported ui option
-            if (uiProp === "ui:option")
-              Object.keys(uischema[parameter]["ui:option"]).forEach(
+            if (uiProp === 'ui:option')
+              Object.keys(uischema[parameter]['ui:option']).forEach(
                 (uiOption) => {
                   if (!supportedOptions.has(uiOption))
                     unsupportedFeatures.push(
                       `UI Property: ui:option.${uiOption} for ${parameter}`
-                    );
+                    )
                 }
-              );
-          });
+              )
+          })
         }
       }
-    );
-  return unsupportedFeatures;
+    )
+  return unsupportedFeatures
 }
 
 // parent function that checks for unsupported features in an entire document
@@ -304,31 +304,30 @@ export function checkForUnsupportedFeatures(
   allFormInputs: { [string]: FormInput }
 ) {
   // add each unsupported feature to this array
-  const unsupportedFeatures = [];
+  const unsupportedFeatures = []
 
-  const widgets = [];
-  const fields = [];
-  const options = [];
+  const widgets = []
+  const fields = []
+  const options = []
   Object.keys(allFormInputs).forEach((inputType) => {
     allFormInputs[inputType].matchIf.forEach((match) => {
       if (match.widget && !widgets.includes(match.widget))
-        widgets.push(match.widget);
-      if (match.field && !fields.includes(match.field))
-        fields.push(match.field);
-    });
+        widgets.push(match.widget)
+      if (match.field && !fields.includes(match.field)) fields.push(match.field)
+    })
     if (
       allFormInputs[inputType].possibleOptions &&
       Array.isArray(allFormInputs[inputType].possibleOptions)
     ) {
-      options.push(...allFormInputs[inputType].possibleOptions);
+      options.push(...allFormInputs[inputType].possibleOptions)
     }
-  });
-  const supportedWidgets = new Set(widgets);
-  const supportedFields = new Set(fields);
-  const supportedOptions = new Set(options);
+  })
+  const supportedWidgets = new Set(widgets)
+  const supportedFields = new Set(fields)
+  const supportedOptions = new Set(options)
 
   // check for unsupported whole form features
-  if (schema && typeof schema === "object" && schema.type === "object") {
+  if (schema && typeof schema === 'object' && schema.type === 'object') {
     unsupportedFeatures.push(
       ...checkObjectForUnsupportedFeatures(
         schema,
@@ -337,12 +336,12 @@ export function checkForUnsupportedFeatures(
         supportedFields,
         supportedOptions
       )
-    );
+    )
   } else {
-    unsupportedFeatures.push("jsonSchema form is not of type object");
+    unsupportedFeatures.push('jsonSchema form is not of type object')
   }
 
-  return unsupportedFeatures;
+  return unsupportedFeatures
 }
 
 // make an element out of the corresponding properties and UI properties
@@ -356,63 +355,63 @@ function generateElement(
   categoryHash: { [string]: string }
 ) {
   let uiProps = {
-    ...uiProperties,
-  };
-  const newElement = {};
+    ...uiProperties
+  }
+  const newElement = {}
   let elementDetails =
-    dataProps && typeof dataProps === "object" ? dataProps : {};
+    dataProps && typeof dataProps === 'object' ? dataProps : {}
 
   // populate newElement with reference if applicable
   if (elementDetails.$ref !== undefined && definitionData) {
     const pathArr =
-      typeof elementDetails.$ref === "string"
-        ? elementDetails.$ref.split("/")
-        : [];
+      typeof elementDetails.$ref === 'string'
+        ? elementDetails.$ref.split('/')
+        : []
     if (
-      pathArr[0] === "#" &&
-      pathArr[1] === "definitions" &&
+      pathArr[0] === '#' &&
+      pathArr[1] === 'definitions' &&
       definitionData[pathArr[2]]
     ) {
       elementDetails = {
         ...elementDetails,
-        ...definitionData[pathArr[2]],
-      };
+        ...definitionData[pathArr[2]]
+      }
     }
 
-    const definedUiProps = (definitionUi || {})[pathArr[2]];
+    const definedUiProps = (definitionUi || {})[pathArr[2]]
     uiProps = {
       ...(definedUiProps || {}),
-      ...uiProps,
-    };
+      ...uiProps
+    }
   }
 
-  newElement.name = name;
-  newElement.required = requiredNames.includes(name);
+  newElement.name = name
+  newElement.required = requiredNames.includes(name)
   newElement.$ref =
-    typeof elementDetails.$ref === "string" ? elementDetails.$ref : undefined;
+    typeof elementDetails.$ref === 'string' ? elementDetails.$ref : undefined
 
-  if (elementDetails.type && elementDetails.type === "object") {
+  if (elementDetails.type && elementDetails.type === 'object') {
     // create a section
-    newElement.schema = elementDetails;
-    newElement.uischema = uiProps || {};
-    newElement.propType = "section";
+    newElement.schema = elementDetails
+    newElement.uischema = uiProps || {}
+    newElement.propType = 'section'
   } else {
     // create a card
-    newElement.dataOptions = elementDetails;
-    newElement.uiOptions = uiProps || {};
+    newElement.dataOptions = elementDetails
+    newElement.uiOptions = uiProps || {}
 
     // ensure that uiOptions does not have duplicate keys with dataOptions
-    const reservedKeys = Object.keys(newElement.dataOptions);
+    const reservedKeys = Object.keys(newElement.dataOptions)
     Object.keys(newElement.uiOptions).forEach((uiKey) => {
       if (reservedKeys.includes(uiKey)) {
-        newElement.uiOptions[`ui:*${uiKey}`] = newElement.uiOptions[uiKey];
+        newElement.uiOptions[`ui:*${uiKey}`] = newElement.uiOptions[uiKey]
       }
-    });
+    })
 
-    newElement.dataOptions.category = getCardCategory(newElement, categoryHash);
-    newElement.propType = "card";
+    newElement.dataOptions.category = getCardCategory(newElement, categoryHash)
+    newElement.propType = 'card'
   }
-  return newElement;
+  return newElement
 }
 
 // generate an array of element objects from a schema and uischema
@@ -421,106 +420,106 @@ export function generateElementPropsFromSchemas(parameters: {
   uischema: { [string]: any },
   definitionData?: { [string]: any },
   definitionUi?: { [string]: any },
-  categoryHash: { [string]: string },
+  categoryHash: { [string]: string }
 }) {
   const {
     schema,
     uischema,
     definitionData,
     definitionUi,
-    categoryHash,
-  } = parameters;
+    categoryHash
+  } = parameters
 
-  if (!schema.properties) return [];
+  if (!schema.properties) return []
 
-  const elementDict = {};
-  const requiredNames = schema.required ? schema.required : [];
+  const elementDict = {}
+  const requiredNames = schema.required ? schema.required : []
 
   // read regular elements from properties
   Object.entries(schema.properties).forEach(([parameter, element]) => {
-    const newElement = {};
+    const newElement = {}
     let elementDetails =
-      element && typeof element === "object"
+      element && typeof element === 'object'
         ? (element: {
             ...any,
-            $ref?: string,
+            $ref?: string
           })
-        : {};
+        : {}
 
     // populate newElement with reference if applicable
     if (elementDetails.$ref !== undefined && definitionData) {
       if (
         elementDetails.$ref &&
-        !elementDetails.$ref.startsWith("#/definitions")
+        !elementDetails.$ref.startsWith('#/definitions')
       )
         throw new Error(
           `Invalid definition, not at '#/definitions': ${elementDetails.$ref}`
-        );
+        )
       const pathArr =
-        elementDetails.$ref !== undefined ? elementDetails.$ref.split("/") : [];
+        elementDetails.$ref !== undefined ? elementDetails.$ref.split('/') : []
       if (
-        pathArr[0] === "#" &&
-        pathArr[1] === "definitions" &&
+        pathArr[0] === '#' &&
+        pathArr[1] === 'definitions' &&
         definitionData[pathArr[2]]
       ) {
         elementDetails = {
           ...elementDetails,
-          ...definitionData[pathArr[2]],
-        };
+          ...definitionData[pathArr[2]]
+        }
       }
 
-      const definedUiProps = (definitionUi || {})[pathArr[2]];
+      const definedUiProps = (definitionUi || {})[pathArr[2]]
       uischema[parameter] = {
         ...(definedUiProps || {}),
-        ...uischema[parameter],
-      };
+        ...uischema[parameter]
+      }
     }
 
-    newElement.name = parameter;
-    newElement.required = requiredNames.includes(parameter);
-    newElement.$ref = elementDetails.$ref;
+    newElement.name = parameter
+    newElement.required = requiredNames.includes(parameter)
+    newElement.$ref = elementDetails.$ref
 
-    if (elementDetails.type && elementDetails.type === "object") {
+    if (elementDetails.type && elementDetails.type === 'object') {
       // create a section
-      newElement.schema = elementDetails;
-      newElement.uischema = uischema[parameter] || {};
-      newElement.propType = "section";
+      newElement.schema = elementDetails
+      newElement.uischema = uischema[parameter] || {}
+      newElement.propType = 'section'
     } else {
       // create a card
-      newElement.dataOptions = elementDetails;
-      newElement.uiOptions = uischema[parameter] || {};
+      newElement.dataOptions = elementDetails
+      newElement.uiOptions = uischema[parameter] || {}
 
       // ensure that uiOptions does not have duplicate keys with dataOptions
-      const reservedKeys = Object.keys(newElement.dataOptions);
+      const reservedKeys = Object.keys(newElement.dataOptions)
       Object.keys(newElement.uiOptions).forEach((uiKey) => {
         if (reservedKeys.includes(uiKey)) {
-          newElement.uiOptions[`ui:*${uiKey}`] = newElement.uiOptions[uiKey];
+          newElement.uiOptions[`ui:*${uiKey}`] = newElement.uiOptions[uiKey]
         }
-      });
+      })
 
       newElement.dataOptions.category = getCardCategory(
         newElement,
         categoryHash
-      );
-      newElement.propType = "card";
+      )
+      newElement.propType = 'card'
     }
-    elementDict[newElement.name] = newElement;
-  });
+    elementDict[newElement.name] = newElement
+  })
   // read dependent elements from dependencies
   if (schema.dependencies) {
     Object.keys(schema.dependencies).forEach((parent) => {
-      const group = schema.dependencies[parent];
+      const group = schema.dependencies[parent]
       if (group.oneOf) {
-        let possibilityIndex = 0;
+        let possibilityIndex = 0
         group.oneOf.forEach((possibility) => {
           if (!elementDict[parent].dependents) {
-            elementDict[parent].dependents = [];
+            elementDict[parent].dependents = []
           }
           elementDict[parent].dependents.push({
             children: [],
-            value: possibility.properties[parent],
-          });
-          const requiredValues = possibility.required || [];
+            value: possibility.properties[parent]
+          })
+          const requiredValues = possibility.required || []
           Object.entries(possibility.properties).forEach(
             ([parameter, element]) => {
               // create a new element if not present in main properties
@@ -533,24 +532,24 @@ export function generateElementPropsFromSchemas(parameters: {
                   definitionData,
                   definitionUi,
                   categoryHash
-                );
-                newElement.required = requiredValues.includes(newElement.name);
-                elementDict[newElement.name] = newElement;
+                )
+                newElement.required = requiredValues.includes(newElement.name)
+                elementDict[newElement.name] = newElement
               }
               if (parameter !== parent) {
-                const newElement = elementDict[parameter];
-                newElement.dependent = true;
-                newElement.parent = parent;
+                const newElement = elementDict[parameter]
+                newElement.dependent = true
+                newElement.parent = parent
                 elementDict[parent].dependents[possibilityIndex].children.push(
                   parameter
-                );
+                )
               }
             }
-          );
-          possibilityIndex += 1;
-        });
+          )
+          possibilityIndex += 1
+        })
       } else if (group.properties) {
-        const requiredValues = group.required || [];
+        const requiredValues = group.required || []
         Object.entries(group.properties).forEach(([parameter, element]) => {
           const newElement = generateElement(
             parameter,
@@ -560,151 +559,151 @@ export function generateElementPropsFromSchemas(parameters: {
             definitionData,
             definitionUi,
             categoryHash
-          );
-          newElement.required = requiredValues.includes(newElement.name);
-          newElement.dependent = true;
-          newElement.parent = parent;
-          elementDict[newElement.name] = newElement;
+          )
+          newElement.required = requiredValues.includes(newElement.name)
+          newElement.dependent = true
+          newElement.parent = parent
+          elementDict[newElement.name] = newElement
           if (elementDict[parent].dependents) {
-            elementDict[parent].dependents[0].children.push(parameter);
+            elementDict[parent].dependents[0].children.push(parameter)
           } else {
-            elementDict[parent].dependents = [{ children: [parameter] }];
+            elementDict[parent].dependents = [{ children: [parameter] }]
           }
-        });
+        })
       } else {
         // eslint-disable-next-line no-console
-        console.error("unsupported dependency type encountered");
+        console.error('unsupported dependency type encountered')
       }
-    });
+    })
   }
 
   // now reorder in accordance with ui:order if defined
-  const cardPropList = [];
-  if (uischema["ui:order"]) {
+  const cardPropList = []
+  if (uischema['ui:order']) {
     // in case there are any options not in ui:order
-    const remainder = [];
+    const remainder = []
     Object.keys(elementDict).forEach((name) => {
-      if (!uischema["ui:order"].includes(name))
-        remainder.push(elementDict[name]);
-    });
+      if (!uischema['ui:order'].includes(name))
+        remainder.push(elementDict[name])
+    })
 
     // map ui order elements into the right order
-    uischema["ui:order"].forEach((name) => {
+    uischema['ui:order'].forEach((name) => {
       // if contains the wildcard *, insert remainder cards there
-      if (name === "*") {
+      if (name === '*') {
         remainder.forEach((remCard) => {
-          cardPropList.push(remCard);
-        });
+          cardPropList.push(remCard)
+        })
       } else if (elementDict[name]) {
-        cardPropList.push(elementDict[name]);
+        cardPropList.push(elementDict[name])
       }
-    });
+    })
   } else {
     Object.keys(elementDict).forEach((name) => {
-      cardPropList.push(elementDict[name]);
-    });
+      cardPropList.push(elementDict[name])
+    })
   }
 
-  updateElementNames(cardPropList);
-  return (cardPropList: Array<ElementProps>);
+  updateElementNames(cardPropList)
+  return (cardPropList: Array<ElementProps>)
 }
 
 // determine the number of element objects from schema and uischema
 export function countElementsFromSchema(schemaData: any) {
-  if (!schemaData.properties) return 0;
-  const elementDict = {};
-  let elementCount = 0;
+  if (!schemaData.properties) return 0
+  const elementDict = {}
+  let elementCount = 0
 
   // read regular elements from properties
   Object.entries(schemaData.properties).forEach(([parameter]) => {
-    elementDict[parameter] = {};
-    elementCount += 1;
-  });
+    elementDict[parameter] = {}
+    elementCount += 1
+  })
   // read dependent elements from dependencies
   if (schemaData.dependencies) {
     Object.keys(schemaData.dependencies).forEach((parent) => {
-      const group = schemaData.dependencies[parent];
+      const group = schemaData.dependencies[parent]
       if (group.oneOf) {
-        let possibilityIndex = 0;
+        let possibilityIndex = 0
         group.oneOf.forEach((possibility) => {
           if (!elementDict[parent].dependents) {
-            elementDict[parent].dependents = [];
+            elementDict[parent].dependents = []
           }
           elementDict[parent].dependents.push({
             children: [],
-            value: possibility.properties[parent],
-          });
+            value: possibility.properties[parent]
+          })
           Object.entries(possibility.properties).forEach(([parameter]) => {
             // create a new element if not present in main properties
             if (!Object.keys(elementDict).includes(parameter)) {
-              elementDict[parameter] = {};
-              elementCount += 1;
+              elementDict[parameter] = {}
+              elementCount += 1
             }
             if (parameter !== parent) {
-              const newElement = elementDict[parameter];
-              newElement.dependent = true;
-              newElement.parent = parent;
+              const newElement = elementDict[parameter]
+              newElement.dependent = true
+              newElement.parent = parent
               elementDict[parent].dependents[possibilityIndex].children.push(
                 parameter
-              );
+              )
             }
-          });
-          possibilityIndex += 1;
-        });
+          })
+          possibilityIndex += 1
+        })
       } else if (group.properties) {
         Object.entries(group.properties).forEach(([parameter]) => {
-          elementDict[parameter] = {};
-          elementCount += 1;
+          elementDict[parameter] = {}
+          elementCount += 1
           if (elementDict[parent].dependents) {
-            elementDict[parent].dependents[0].children.push(parameter);
+            elementDict[parent].dependents[0].children.push(parameter)
           } else {
-            elementDict[parent].dependents = [{ children: [parameter] }];
+            elementDict[parent].dependents = [{ children: [parameter] }]
           }
-        });
+        })
       } else {
         // eslint-disable-next-line no-console
-        console.error("unsupported dependency type encountered");
+        console.error('unsupported dependency type encountered')
       }
-    });
+    })
   }
 
-  return (elementCount: number);
+  return (elementCount: number)
 }
 
 // convert an element into a schema equivalent
 function generateSchemaElementFromElement(element: ElementProps) {
   if (element.$ref !== undefined) {
     return {
-      $ref: element.$ref,
-    };
-  } else if (element.propType === "card") {
-    if (element.dataOptions.category === "section") {
+      $ref: element.$ref
+    }
+  } else if (element.propType === 'card') {
+    if (element.dataOptions.category === 'section') {
       return {
-        type: "object",
-      };
+        type: 'object'
+      }
     } else {
-      const prop = {};
+      const prop = {}
 
       Object.keys(element.dataOptions).forEach((key) => {
         if (
           ![
-            "category",
-            "hideKey",
-            "path",
-            "definitionData",
-            "definitionUi",
-            "allFormInputs",
+            'category',
+            'hideKey',
+            'path',
+            'definitionData',
+            'definitionUi',
+            'allFormInputs'
           ].includes(key) &&
-          element.dataOptions[key] !== ""
+          element.dataOptions[key] !== ''
         )
-          prop[key] = element.dataOptions[key];
-      });
-      return prop;
+          prop[key] = element.dataOptions[key]
+      })
+      return prop
     }
-  } else if (element.propType === "section") {
-    return element.schema;
+  } else if (element.propType === 'section') {
+    return element.schema
   } else {
-    throw new Error("Element that is neither card, section, nor ref");
+    throw new Error('Element that is neither card, section, nor ref')
   }
 }
 
@@ -712,121 +711,121 @@ function generateSchemaElementFromElement(element: ElementProps) {
 export function generateSchemaFromElementProps(
   elementArr: Array<ElementProps>
 ) {
-  if (!elementArr) return {};
-  const newSchema = {};
+  if (!elementArr) return {}
+  const newSchema = {}
 
-  const props = {};
-  const dependencies = {};
-  const elementDict = {};
-  const dependentElements = new Set([]);
+  const props = {}
+  const dependencies = {}
+  const elementDict = {}
+  const dependentElements = new Set([])
   for (let index = 0; index < elementArr.length; index += 1) {
-    const element = elementArr[index];
-    elementDict[element.name] = { ...element };
+    const element = elementArr[index]
+    elementDict[element.name] = { ...element }
     if (element.dependents)
       element.dependents.forEach((possibility) => {
         possibility.children.forEach((dependentElement) => {
-          dependentElements.add(dependentElement);
-        });
-      });
+          dependentElements.add(dependentElement)
+        })
+      })
   }
   Object.keys(elementDict).forEach((elementName) => {
-    const element = elementDict[elementName];
+    const element = elementDict[elementName]
     if (element.dependents && element.dependents[0]) {
       if (element.dependents[0].value) {
         // handle value based case
         dependencies[elementName] = {
           oneOf: element.dependents.map((possibility) => {
-            const childrenComponents = {};
-            const requiredValues = [];
+            const childrenComponents = {}
+            const requiredValues = []
             possibility.children.forEach((child) => {
               if (elementDict[child]) {
                 childrenComponents[child] = generateSchemaElementFromElement(
                   elementDict[child]
-                );
-                if (elementDict[child].required) requiredValues.push(child);
+                )
+                if (elementDict[child].required) requiredValues.push(child)
               }
-            });
+            })
             return {
               properties: {
                 [elementName]: possibility.value,
-                ...childrenComponents,
+                ...childrenComponents
               },
-              required: requiredValues,
-            };
-          }),
-        };
+              required: requiredValues
+            }
+          })
+        }
       } else {
         // handle definition based case
-        const childrenComponents = {};
-        const requiredValues = [];
+        const childrenComponents = {}
+        const requiredValues = []
         element.dependents[0].children.forEach((child) => {
           childrenComponents[child] = generateSchemaElementFromElement(
             elementDict[child]
-          );
-          if (elementDict[child].required) requiredValues.push(child);
-        });
+          )
+          if (elementDict[child].required) requiredValues.push(child)
+        })
         dependencies[elementName] = {
           properties: childrenComponents,
-          required: requiredValues,
-        };
+          required: requiredValues
+        }
       }
     }
     if (!dependentElements.has(elementName))
-      props[element.name] = generateSchemaElementFromElement(element);
-  });
+      props[element.name] = generateSchemaElementFromElement(element)
+  })
 
-  newSchema.properties = props;
-  newSchema.dependencies = dependencies;
+  newSchema.properties = props
+  newSchema.dependencies = dependencies
   newSchema.required = elementArr
     .filter(({ required, dependent }) => required && !dependent)
-    .map<string>(({ name }) => name);
+    .map<string>(({ name }) => name)
 
-  return newSchema;
+  return newSchema
 }
 
 export function generateUiSchemaFromElementProps(
   elementArr: Array<ElementProps>,
   definitionUi: any
 ) {
-  if (!elementArr) return {};
+  if (!elementArr) return {}
 
-  const uiSchema = {};
-  const uiOrder = [];
-  const definitions = definitionUi;
+  const uiSchema = {}
+  const uiOrder = []
+  const definitions = definitionUi
 
   elementArr.forEach((element) => {
-    uiOrder.push(element.name);
+    uiOrder.push(element.name)
     if (element.$ref !== undefined) {
       // look for the reference
       const pathArr =
-        typeof element.$ref === "string" ? element.$ref.split("/") : [];
+        typeof element.$ref === 'string' ? element.$ref.split('/') : []
       if (definitions && definitions[pathArr[2]])
-        uiSchema[element.name] = definitions[pathArr[2]];
-    } else if (element.propType === "card" && element.uiOptions) {
+        uiSchema[element.name] = definitions[pathArr[2]]
+    } else if (element.propType === 'card' && element.uiOptions) {
       Object.keys(element.uiOptions).forEach((uiOption) => {
-        if (!uiSchema[element.name]) uiSchema[element.name] = {};
-        if (uiOption.startsWith("ui:*")) {
+        if (!uiSchema[element.name]) uiSchema[element.name] = {}
+        if (uiOption.startsWith('ui:*')) {
           uiSchema[element.name][uiOption.substring(4)] =
-            element.uiOptions[uiOption];
+            element.uiOptions[uiOption]
         } else {
-          uiSchema[element.name][uiOption] = element.uiOptions[uiOption];
+          uiSchema[element.name][uiOption] = element.uiOptions[uiOption]
         }
-      });
-    } else if (element.propType === "section" && element.uischema) {
-      uiSchema[element.name] = element.uischema;
+      })
+    } else if (element.propType === 'section' && element.uischema) {
+      uiSchema[element.name] = element.uischema
     }
-  });
+  })
 
-  uiSchema["ui:order"] = uiOrder;
+  uiSchema['ui:order'] = uiOrder
 
-  return uiSchema;
+  return uiSchema
 }
 
 export function getCardParameterInputComponentForType(
   category: string,
   allFormInputs: { [string]: FormInput }
 ) {
-  return allFormInputs[category].modalBody;
+  return allFormInputs[category].modalBody
 }
 
 // takes in an array of Card Objects and updates both schemas
@@ -837,26 +836,26 @@ export function updateSchemas(
     uischema: { [string]: any },
     onChange: ({ [string]: any }, { [string]: any }) => any,
     definitionData?: { [string]: any },
-    definitionUi?: { [string]: any },
+    definitionUi?: { [string]: any }
   }
 ) {
-  const { schema, uischema, onChange, definitionUi } = parameters;
+  const { schema, uischema, onChange, definitionUi } = parameters
   const definedUi = (uischema || {}).definitions
     ? { definitions: uischema.definitions }
-    : {};
+    : {}
   const newUiSchema = ({
     ...definedUi,
-    ...generateUiSchemaFromElementProps(elementArr, definitionUi),
-  }: { [string]: any });
+    ...generateUiSchemaFromElementProps(elementArr, definitionUi)
+  }: { [string]: any })
   const newSchema = ({
     ...schema,
-    ...generateSchemaFromElementProps(elementArr),
-  }: { [string]: any });
+    ...generateSchemaFromElementProps(elementArr)
+  }: { [string]: any })
 
   // mandate that the type is an object if not already done
-  newSchema.type = "object";
+  newSchema.type = 'object'
 
-  onChange(newSchema, newUiSchema);
+  onChange(newSchema, newUiSchema)
 }
 
 // given an initial schema, update with a new card appended
@@ -867,7 +866,7 @@ export function addCardObj(parameters: {
   definitionData: { [string]: any },
   definitionUi: { [string]: any },
   index?: number,
-  categoryHash: { [string]: string },
+  categoryHash: { [string]: string }
 }) {
   const {
     schema,
@@ -876,57 +875,57 @@ export function addCardObj(parameters: {
     definitionData,
     definitionUi,
     index,
-    categoryHash,
-  } = parameters;
+    categoryHash
+  } = parameters
   const newElementObjArr = generateElementPropsFromSchemas({
     schema,
     uischema,
     definitionData,
     definitionUi,
-    categoryHash,
-  });
+    categoryHash
+  })
 
   // ensure that each added block has a unique name
 
-  const names = newElementObjArr.map((element) => element.name);
+  const names = newElementObjArr.map((element) => element.name)
   const i =
     names.length > 0
       ? Math.max(
           ...names.map((name) =>
-            name.startsWith("newInput")
+            name.startsWith('newInput')
               ? Number.parseInt(name.charAt(8), 10)
               : 0
           )
         ) + 1
-      : 1;
+      : 1
 
   const newElement = ({
     name: `newInput${i}`,
     required: false,
     dataOptions: {
       title: `New Input ${i}`,
-      type: "string",
-      default: "",
+      type: 'string',
+      default: ''
     },
     uiOptions: {},
-    propType: "card",
+    propType: 'card',
     schema: {},
     uischema: {},
-    neighborNames: [],
-  }: ElementProps);
+    neighborNames: []
+  }: ElementProps)
 
   if (index !== undefined && index !== null) {
-    newElementObjArr.splice(index + 1, 0, newElement);
+    newElementObjArr.splice(index + 1, 0, newElement)
   } else {
-    newElementObjArr.push(newElement);
+    newElementObjArr.push(newElement)
   }
   updateSchemas(newElementObjArr, {
     schema,
     uischema,
     definitionData,
     definitionUi,
-    onChange,
-  });
+    onChange
+  })
 }
 
 // given an initial schema, update with a new section appended
@@ -937,7 +936,7 @@ export function addSectionObj(parameters: {
   definitionData: { [string]: any },
   definitionUi: { [string]: any },
   index?: number,
-  categoryHash: { [string]: string },
+  categoryHash: { [string]: string }
 }) {
   const {
     schema,
@@ -946,56 +945,56 @@ export function addSectionObj(parameters: {
     definitionData,
     definitionUi,
     index,
-    categoryHash,
-  } = parameters;
+    categoryHash
+  } = parameters
   const newElementObjArr = generateElementPropsFromSchemas({
     schema,
     uischema,
     definitionData,
     definitionUi,
-    categoryHash,
-  });
+    categoryHash
+  })
 
   // ensure that each added block has a unique name
-  const names = newElementObjArr.map((element) => element.name);
+  const names = newElementObjArr.map((element) => element.name)
   const i =
     names.length > 0
       ? Math.max(
           ...names.map((name) =>
-            name.startsWith("newInput")
+            name.startsWith('newInput')
               ? Number.parseInt(name.charAt(8), 10)
               : 0
           )
         ) + 1
-      : 1;
+      : 1
 
   const newElement = ({
     name: `newInput${i}`,
     required: false,
     dataOptions: {
       title: `New Input ${i}`,
-      type: "object",
-      default: "",
+      type: 'object',
+      default: ''
     },
     uiOptions: {},
-    propType: "section",
-    schema: { title: `New Input ${i}`, type: "object" },
+    propType: 'section',
+    schema: { title: `New Input ${i}`, type: 'object' },
     uischema: {},
-    neighborNames: [],
-  }: ElementProps);
+    neighborNames: []
+  }: ElementProps)
 
   if (index !== undefined && index !== null) {
-    newElementObjArr.splice(index + 1, 0, newElement);
+    newElementObjArr.splice(index + 1, 0, newElement)
   } else {
-    newElementObjArr.push(newElement);
+    newElementObjArr.push(newElement)
   }
   updateSchemas(newElementObjArr, {
     schema,
     uischema,
     definitionData,
     definitionUi,
-    onChange,
-  });
+    onChange
+  })
 }
 
 // generate an array of Card and Section components from a schema
@@ -1013,7 +1012,7 @@ export function generateElementComponentsFromSchemas(parameters: {
   mods?: Mods,
   categoryHash: { [string]: string },
   Card: React.AbstractComponent<{ [string]: any }>,
-  Section: React.AbstractComponent<{ [string]: any }>,
+  Section: React.AbstractComponent<{ [string]: any }>
 }) {
   const {
     schemaData,
@@ -1029,31 +1028,31 @@ export function generateElementComponentsFromSchemas(parameters: {
     mods,
     categoryHash,
     Card,
-    Section,
-  } = parameters;
+    Section
+  } = parameters
 
-  const schema = parse(stringify(schemaData, "yaml"), "yaml");
-  const uischema = parse(stringify(uiSchemaData, "yaml"), "yaml");
+  const schema = parse(stringify(schemaData, 'yaml'), 'yaml')
+  const uischema = parse(stringify(uiSchemaData, 'yaml'), 'yaml')
 
-  if (!schema.properties) return [];
+  if (!schema.properties) return []
   const elementPropArr = generateElementPropsFromSchemas({
     schema,
     uischema,
     definitionData,
     definitionUi,
-    categoryHash,
-  });
+    categoryHash
+  })
 
   const elementList = elementPropArr.map<React.Node>((elementProp, index) => {
     const expanded =
       (cardOpenArray && index < cardOpenArray.length && cardOpenArray[index]) ||
-      false;
-    if (elementProp.propType === "card") {
+      false
+    if (elementProp.propType === 'card') {
       // choose the appropriate type specific parameters
       const TypeSpecificParameters = getCardParameterInputComponentForType(
-        elementProp.dataOptions.category || "string",
+        elementProp.dataOptions.category || 'string',
         allFormInputs
-      );
+      )
 
       // add a fully defined card component to the list of components
       return (
@@ -1070,7 +1069,7 @@ export function generateElementComponentsFromSchemas(parameters: {
             dependent: elementPropArr[index].dependent,
             parent: elementPropArr[index].parent,
             ...elementPropArr[index].uiOptions,
-            ...elementPropArr[index].dataOptions,
+            ...elementPropArr[index].dataOptions
           }}
           key={`${path}_${elementPropArr[index].name}`}
           TypeSpecificParameters={TypeSpecificParameters}
@@ -1080,36 +1079,36 @@ export function generateElementComponentsFromSchemas(parameters: {
               uischema,
               definitionData,
               definitionUi,
-              categoryHash,
-            });
+              categoryHash
+            })
 
             // extract uiOptions and other properties
-            const newDataProps = {};
-            const newUiProps = {};
+            const newDataProps = {}
+            const newUiProps = {}
             Object.keys(newCardObj).forEach((propName) => {
-              if (propName.startsWith("ui:")) {
-                if (propName.startsWith("ui:*")) {
-                  newUiProps[propName.substring(4)] = newCardObj[propName];
+              if (propName.startsWith('ui:')) {
+                if (propName.startsWith('ui:*')) {
+                  newUiProps[propName.substring(4)] = newCardObj[propName]
                 } else {
-                  newUiProps[propName] = newCardObj[propName];
+                  newUiProps[propName] = newCardObj[propName]
                 }
               } else if (
                 ![
-                  "name",
-                  "required",
-                  "lang",
-                  "neighborNames",
-                  "dependents",
-                  "dependent",
-                  "parent",
+                  'name',
+                  'required',
+                  'lang',
+                  'neighborNames',
+                  'dependents',
+                  'dependent',
+                  'parent'
                 ].includes(propName)
               ) {
-                newDataProps[propName] = newCardObj[propName];
+                newDataProps[propName] = newCardObj[propName]
               }
-            });
+            })
 
-            if (newElementObjArr[index].propType === "card") {
-              const oldElement = newElementObjArr[index];
+            if (newElementObjArr[index].propType === 'card') {
+              const oldElement = newElementObjArr[index]
               newElementObjArr[index] = {
                 ...oldElement,
                 dataOptions: newDataProps,
@@ -1120,18 +1119,18 @@ export function generateElementComponentsFromSchemas(parameters: {
                 parent: newCardObj.parent,
                 name: newCardObj.name,
                 $ref: newCardObj.$ref,
-                propType: "card",
-              };
+                propType: 'card'
+              }
             } else {
-              throw new Error("Card editing non card element");
+              throw new Error('Card editing non card element')
             }
             updateSchemas(newElementObjArr, {
               schema,
               uischema,
               definitionData,
               definitionUi,
-              onChange,
-            });
+              onChange
+            })
           }}
           onDelete={() => {
             // splice out this index from the card array
@@ -1140,20 +1139,20 @@ export function generateElementComponentsFromSchemas(parameters: {
               uischema,
               definitionData,
               definitionUi,
-              categoryHash,
-            });
-            newElementObjArr.splice(index, 1);
+              categoryHash
+            })
+            newElementObjArr.splice(index, 1)
             setCardOpenArray([
               ...cardOpenArray.slice(0, index),
-              ...cardOpenArray.slice(index + 1),
-            ]);
+              ...cardOpenArray.slice(index + 1)
+            ])
             updateSchemas(newElementObjArr, {
               schema,
               uischema,
               definitionData,
               definitionUi,
-              onChange,
-            });
+              onChange
+            })
           }}
           onMoveUp={() => {
             const newElementObjArr = generateElementPropsFromSchemas({
@@ -1161,20 +1160,20 @@ export function generateElementComponentsFromSchemas(parameters: {
               uischema,
               definitionData,
               definitionUi,
-              categoryHash,
-            });
-            if (index === 0) return;
+              categoryHash
+            })
+            if (index === 0) return
 
-            const tempBlock = newElementObjArr[index - 1];
-            newElementObjArr[index - 1] = newElementObjArr[index];
-            newElementObjArr[index] = tempBlock;
+            const tempBlock = newElementObjArr[index - 1]
+            newElementObjArr[index - 1] = newElementObjArr[index]
+            newElementObjArr[index] = tempBlock
             updateSchemas(newElementObjArr, {
               schema,
               uischema,
               definitionData,
               definitionUi,
-              onChange,
-            });
+              onChange
+            })
           }}
           onMoveDown={() => {
             const newElementObjArr = generateElementPropsFromSchemas({
@@ -1182,23 +1181,23 @@ export function generateElementComponentsFromSchemas(parameters: {
               uischema,
               definitionData,
               definitionUi,
-              categoryHash,
-            });
-            if (index === elementPropArr.length - 1) return;
+              categoryHash
+            })
+            if (index === elementPropArr.length - 1) return
 
-            const tempBlock = newElementObjArr[index + 1];
-            newElementObjArr[index + 1] = newElementObjArr[index];
-            newElementObjArr[index] = tempBlock;
+            const tempBlock = newElementObjArr[index + 1]
+            newElementObjArr[index + 1] = newElementObjArr[index]
+            newElementObjArr[index] = tempBlock
             updateSchemas(newElementObjArr, {
               schema,
               uischema,
               definitionData,
               definitionUi,
-              onChange,
-            });
+              onChange
+            })
           }}
           addElem={(choice: string) => {
-            if (choice === "card") {
+            if (choice === 'card') {
               addCardObj({
                 schema,
                 uischema,
@@ -1206,9 +1205,9 @@ export function generateElementComponentsFromSchemas(parameters: {
                 definitionData: definitionData || {},
                 definitionUi: definitionUi || {},
                 index,
-                categoryHash,
-              });
-            } else if (choice === "section") {
+                categoryHash
+              })
+            } else if (choice === 'section') {
               addSectionObj({
                 schema,
                 uischema,
@@ -1216,24 +1215,24 @@ export function generateElementComponentsFromSchemas(parameters: {
                 definitionData: definitionData || {},
                 definitionUi: definitionUi || {},
                 index,
-                categoryHash,
-              });
+                categoryHash
+              })
             }
-            setCardOpenArray([...cardOpenArray, false]);
+            setCardOpenArray([...cardOpenArray, false])
           }}
           cardOpen={expanded}
           setCardOpen={(newState: boolean) =>
             setCardOpenArray([
               ...cardOpenArray.slice(0, index),
               newState,
-              ...cardOpenArray.slice(index + 1),
+              ...cardOpenArray.slice(index + 1)
             ])
           }
           allFormInputs={allFormInputs}
           mods={mods}
         />
-      );
-    } else if (elementProp.propType === "section") {
+      )
+    } else if (elementProp.propType === 'section') {
       // create a section with the appropriate schemas here
       return (
         <Section
@@ -1249,102 +1248,102 @@ export function generateElementComponentsFromSchemas(parameters: {
               uischema,
               definitionData,
               definitionUi,
-              categoryHash,
-            });
+              categoryHash
+            })
 
-            const oldSection = newElementObjArr[index];
+            const oldSection = newElementObjArr[index]
 
             newElementObjArr[index] = {
               ...oldSection,
               schema: newSchema,
               uischema: newUiSchema,
-              propType: "section",
-            };
+              propType: 'section'
+            }
 
-            if (newRef) newElementObjArr[index].$ref = newRef;
+            if (newRef) newElementObjArr[index].$ref = newRef
 
             updateSchemas(newElementObjArr, {
               schema,
               uischema,
               definitionData,
               definitionUi,
-              onChange,
-            });
+              onChange
+            })
           }}
           onNameChange={(newName: string) => {
-            const oldSection = elementProp;
+            const oldSection = elementProp
 
             // check if newName overlaps with an existing name
             if (elementPropArr.map((elem) => elem.name).includes(newName))
-              return;
+              return
 
             const newElementObjArr = generateElementPropsFromSchemas({
               schema,
               uischema,
               definitionData,
               definitionUi,
-              categoryHash,
-            });
+              categoryHash
+            })
             newElementObjArr[index] = {
               ...oldSection,
-              name: newName,
-            };
+              name: newName
+            }
             updateSchemas(newElementObjArr, {
               schema,
               uischema,
               definitionData,
               definitionUi,
-              onChange,
-            });
+              onChange
+            })
           }}
           onRequireToggle={() => {
-            const oldSection = elementProp;
+            const oldSection = elementProp
 
             const newElementObjArr = generateElementPropsFromSchemas({
               schema,
               uischema,
               definitionData,
               definitionUi,
-              categoryHash,
-            });
+              categoryHash
+            })
             newElementObjArr[index] = {
               ...oldSection,
-              required: !oldSection.required,
-            };
+              required: !oldSection.required
+            }
             updateSchemas(newElementObjArr, {
               schema,
               uischema,
               definitionData,
               definitionUi,
-              onChange,
-            });
+              onChange
+            })
           }}
           onDependentsChange={(
             newDependents: Array<{
               children: Array<string>,
-              value?: any,
+              value?: any
             }>
           ) => {
-            const oldSection = elementProp;
+            const oldSection = elementProp
 
             const newElementObjArr = generateElementPropsFromSchemas({
               schema,
               uischema,
               definitionData,
               definitionUi,
-              categoryHash,
-            });
+              categoryHash
+            })
             newElementObjArr[index] = {
               ...oldSection,
-              dependents: newDependents,
-            };
+              dependents: newDependents
+            }
             updateSchemas(newElementObjArr, {
               schema,
               uischema,
               onChange,
               definitionData,
-              definitionUi,
-            });
+              definitionUi
+            })
           }}
           onDelete={() => {
             // splice out this index from the card array
@@ -1353,20 +1352,20 @@ export function generateElementComponentsFromSchemas(parameters: {
               uischema,
               definitionData,
               definitionUi,
-              categoryHash,
-            });
-            newElementObjArr.splice(index, 1);
+              categoryHash
+            })
+            newElementObjArr.splice(index, 1)
             setCardOpenArray([
               ...cardOpenArray.slice(0, index),
-              ...cardOpenArray.slice(index + 1),
-            ]);
+              ...cardOpenArray.slice(index + 1)
+            ])
             updateSchemas(newElementObjArr, {
               schema,
               uischema,
               definitionData,
               definitionUi,
-              onChange,
-            });
+              onChange
+            })
           }}
           onMoveUp={() => {
             const newElementObjArr = generateElementPropsFromSchemas({
@@ -1374,20 +1373,20 @@ export function generateElementComponentsFromSchemas(parameters: {
               uischema,
               definitionData,
               definitionUi,
-              categoryHash,
-            });
-            if (index === 0) return;
+              categoryHash
+            })
+            if (index === 0) return
 
-            const tempBlock = newElementObjArr[index - 1];
-            newElementObjArr[index - 1] = newElementObjArr[index];
-            newElementObjArr[index] = tempBlock;
+            const tempBlock = newElementObjArr[index - 1]
+            newElementObjArr[index - 1] = newElementObjArr[index]
+            newElementObjArr[index] = tempBlock
             updateSchemas(newElementObjArr, {
               schema,
               uischema,
               definitionData,
               definitionUi,
-              onChange,
-            });
+              onChange
+            })
           }}
           onMoveDown={() => {
             const newElementObjArr = generateElementPropsFromSchemas({
@@ -1395,20 +1394,20 @@ export function generateElementComponentsFromSchemas(parameters: {
               uischema,
               definitionData,
               definitionUi,
-              categoryHash,
-            });
-            if (index === elementPropArr.length - 1) return;
+              categoryHash
+            })
+            if (index === elementPropArr.length - 1) return
 
-            const tempBlock = newElementObjArr[index + 1];
-            newElementObjArr[index + 1] = newElementObjArr[index];
-            newElementObjArr[index] = tempBlock;
+            const tempBlock = newElementObjArr[index + 1]
+            newElementObjArr[index + 1] = newElementObjArr[index]
+            newElementObjArr[index] = tempBlock
             updateSchemas(newElementObjArr, {
               schema,
               uischema,
               definitionData,
               definitionUi,
-              onChange,
-            });
+              onChange
+            })
           }}
           name={elementProp.name}
           key={`${path}_${elementPropArr[index].name}`}
@@ -1423,7 +1422,7 @@ export function generateElementComponentsFromSchemas(parameters: {
           dependent={elementProp.dependent}
           parent={elementProp.parent}
           addElem={(choice: string) => {
-            if (choice === "card") {
+            if (choice === 'card') {
               addCardObj({
                 schema,
                 uischema,
@@ -1431,9 +1430,9 @@ export function generateElementComponentsFromSchemas(parameters: {
                 definitionData: definitionData || {},
                 definitionUi: definitionUi || {},
                 index,
-                categoryHash,
-              });
-            } else if (choice === "section") {
+                categoryHash
+              })
+            } else if (choice === 'section') {
               addSectionObj({
                 schema,
                 uischema,
@@ -1441,33 +1440,33 @@ export function generateElementComponentsFromSchemas(parameters: {
                 definitionData: definitionData || {},
                 definitionUi: definitionUi || {},
                 index,
-                categoryHash,
-              });
+                categoryHash
+              })
             }
-            setCardOpenArray([...cardOpenArray, false]);
+            setCardOpenArray([...cardOpenArray, false])
           }}
           cardOpen={expanded}
           setCardOpen={(newState: boolean) =>
             setCardOpenArray([
               ...cardOpenArray.slice(0, index),
               newState,
-              ...cardOpenArray.slice(index + 1),
+              ...cardOpenArray.slice(index + 1)
             ])
           }
           allFormInputs={allFormInputs}
           categoryHash={categoryHash}
         />
-      );
+      )
     } else {
       return (
         <div>
           <h2> Error parsing element </h2>
         </div>
-      );
+      )
     }
-  });
+  })
 
-  return elementList;
+  return elementList
 }
 
 // function called when drag and drop ends
@@ -1479,7 +1478,7 @@ export function onDragEnd(
     onChange: ({ [string]: any }, { [string]: any }) => any,
     definitionData?: { [string]: any },
     definitionUi?: { [string]: any },
-    categoryHash: { [string]: string },
+    categoryHash: { [string]: string }
   }
 ) {
   const {
@@ -1488,29 +1487,29 @@ export function onDragEnd(
     onChange,
     definitionData,
     definitionUi,
-    categoryHash,
-  } = details;
-  const src = result.source.index;
-  const dest = result.destination.index;
+    categoryHash
+  } = details
+  const src = result.source.index
+  const dest = result.destination.index
   const newElementObjArr = generateElementPropsFromSchemas({
     schema,
     uischema,
     definitionData,
     definitionUi,
-    categoryHash,
-  });
+    categoryHash
+  })
 
-  const tempBlock = newElementObjArr[src];
-  newElementObjArr[src] = newElementObjArr[dest];
-  newElementObjArr[dest] = tempBlock;
+  const tempBlock = newElementObjArr[src]
+  newElementObjArr[src] = newElementObjArr[dest]
+  newElementObjArr[dest] = tempBlock
 
   updateSchemas(newElementObjArr, {
     schema,
     uischema,
     definitionData: definitionData || {},
     definitionUi: definitionUi || {},
-    onChange,
-  });
+    onChange
+  })
 }
 
 // helper function to recursively update sections
@@ -1520,42 +1519,42 @@ function propagateElementChange(
   definitionUi: { [string]: any },
   categoryHash: { [string]: string }
 ) {
-  const updatedElementArr = [];
+  const updatedElementArr = []
   elementArr.forEach((element) => {
     // update section and it's children
-    if (element.propType === "section") {
+    if (element.propType === 'section') {
       const childrenElements = generateElementPropsFromSchemas({
         schema: element.schema,
         uischema: element.uischema,
         definitionData,
         definitionUi,
-        categoryHash,
-      });
+        categoryHash
+      })
       const updatedChildren = propagateElementChange(
         childrenElements,
         definitionData,
         definitionUi,
         categoryHash
-      );
+      )
       const newUiSchema = {
         ...element.uischema,
-        ...generateUiSchemaFromElementProps(updatedChildren, definitionUi),
-      };
+        ...generateUiSchemaFromElementProps(updatedChildren, definitionUi)
+      }
       const newSchema = {
         ...element.schema,
-        ...generateSchemaFromElementProps(updatedChildren),
-      };
+        ...generateSchemaFromElementProps(updatedChildren)
+      }
       const newElement = {
         ...element,
         schema: newSchema,
-        uischema: newUiSchema,
-      };
-      updatedElementArr.push(newElement);
+        uischema: newUiSchema
+      }
+      updatedElementArr.push(newElement)
     } else {
-      updatedElementArr.push(element);
+      updatedElementArr.push(element)
     }
-  });
-  return updatedElementArr;
+  })
+  return updatedElementArr
 }
 
 // propogate changes in a schema and ui schema with updated definitions but outdated body componenents
@@ -1565,27 +1564,27 @@ export function propagateDefinitionChanges(
   onChange: ({ [string]: any }, { [string]: any }) => void,
   categoryHash: { [string]: string }
 ) {
-  const definitionData = schema.definitions;
-  const definitionUi = uischema.definitions;
+  const definitionData = schema.definitions
+  const definitionUi = uischema.definitions
   const bodyElements = generateElementPropsFromSchemas({
     schema,
     uischema,
     definitionData,
     definitionUi,
-    categoryHash,
-  });
+    categoryHash
+  })
   const updatedBodyElements = propagateElementChange(
     bodyElements,
     definitionData,
     definitionUi,
     categoryHash
-  );
+  )
 
   updateSchemas(updatedBodyElements, {
     schema,
     uischema,
     definitionData,
     definitionUi,
-    onChange,
-  });
+    onChange
+  })
 }

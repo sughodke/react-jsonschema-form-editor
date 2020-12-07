@@ -1,19 +1,19 @@
 // @flow
 
-import React from "react";
-import classnames from "classnames";
-import { createUseStyles } from "react-jss";
+import React from 'react'
+import classnames from 'classnames'
+import { createUseStyles } from 'react-jss'
 
 const useStyles = createUseStyles({
   checkbox: {
-    "& *": {
-      display: "inline-block",
+    '& *': {
+      display: 'inline-block'
     },
-    "& input": {
-      marginRight: "5px",
-    },
-  },
-});
+    '& input': {
+      marginRight: '5px'
+    }
+  }
+})
 
 type Props = {
   onChangeValue: Function,
@@ -24,33 +24,33 @@ type Props = {
   value?: string,
   disabled?: boolean,
   dataTest?: string,
-  labelClassName?: string,
-};
+  labelClassName?: string
+}
 
 const FBCheckbox = ({
   onChangeValue,
-  value = "",
+  value = '',
   isChecked = false,
-  label = "",
-  use = "action",
+  label = '',
+  use = 'action',
   disabled = false,
-  id = "",
-  dataTest = "",
-  labelClassName = "",
+  id = '',
+  dataTest = '',
+  labelClassName = ''
 }: Props) => {
-  const classjss = useStyles();
-  const classes = classnames("fb-checkbox", {
-    "edit-checkbox": !disabled && use === "edit",
-    "action-checkbox": !disabled && use === "action",
-    "disabled-checked-checkbox": disabled && isChecked,
-    "disabled-unchecked-checkbox": disabled && !isChecked,
-  });
-  const potentialCheckboxId = id !== "" ? id : label;
-  const checkboxId = potentialCheckboxId !== "" ? potentialCheckboxId : null;
+  const classjss = useStyles()
+  const classes = classnames('fb-checkbox', {
+    'edit-checkbox': !disabled && use === 'edit',
+    'action-checkbox': !disabled && use === 'action',
+    'disabled-checked-checkbox': disabled && isChecked,
+    'disabled-unchecked-checkbox': disabled && !isChecked
+  })
+  const potentialCheckboxId = id !== '' ? id : label
+  const checkboxId = potentialCheckboxId !== '' ? potentialCheckboxId : null
   return (
-    <div data-test="checkbox" className={`${classes} ${classjss.checkbox}`}>
+    <div data-test='checkbox' className={`${classes} ${classjss.checkbox}`}>
       <input
-        type="checkbox"
+        type='checkbox'
         id={checkboxId}
         data-test={dataTest || undefined}
         onChange={disabled ? () => {} : onChangeValue}
@@ -58,7 +58,7 @@ const FBCheckbox = ({
         disabled={disabled}
         checked={isChecked}
       />
-      <div className="checkbox-overlay">
+      <div className='checkbox-overlay'>
         {label && (
           <label htmlFor={checkboxId} className={labelClassName || undefined}>
             {label}
@@ -66,7 +66,7 @@ const FBCheckbox = ({
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default FBCheckbox;
+export default FBCheckbox

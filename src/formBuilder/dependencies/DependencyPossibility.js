@@ -1,9 +1,9 @@
 // @flow
 
-import * as React from "react";
-import Tooltip from "../Tooltip";
-import CardSelector from "./CardSelector";
-import ValueSelector from "./ValueSelector";
+import * as React from 'react'
+import Tooltip from '../Tooltip'
+import CardSelector from './CardSelector'
+import ValueSelector from './ValueSelector'
 
 // a possible dependency
 export default function DependencyPossibility({
@@ -15,32 +15,32 @@ export default function DependencyPossibility({
   parentEnums,
   parentType,
   parentName,
-  parentSchema,
+  parentSchema
 }: {
   possibility: {
     children: Array<string>,
-    value?: any,
+    value?: any
   },
   neighborNames: Array<string>,
   path: string,
   onChange: (newPossibility: {
     children: Array<string>,
-    value?: any,
+    value?: any
   }) => void,
   onDelete: () => void,
   parentEnums?: Array<string | number>,
   parentType?: string,
   parentName?: string,
-  parentSchema?: string,
+  parentSchema?: string
 }) {
   return (
-    <div className="form-dependency-condition">
+    <div className='form-dependency-condition'>
       <h5>
-        Display the following:{" "}
+        Display the following:{' '}
         <Tooltip
           id={`${path}_bulk`}
-          type="help"
-          text="Choose the other form elements that depend on this one"
+          type='help'
+          text='Choose the other form elements that depend on this one'
         />
       </h5>
       <CardSelector
@@ -51,19 +51,19 @@ export default function DependencyPossibility({
         onChange={(chosenChoices: Array<string>) =>
           onChange({ ...possibility, children: [...chosenChoices] })
         }
-        placeholder={"Choose a dependent..."}
+        placeholder='Choose a dependent...'
         path={path}
       />
       <h5>
-        If "{parentName}" has {possibility.value ? "the value:" : "a value."}
+        If "{parentName}" has {possibility.value ? 'the value:' : 'a value.'}
       </h5>
-      <div style={{ display: possibility.value ? "initial" : "none" }}>
+      <div style={{ display: possibility.value ? 'initial' : 'none' }}>
         <br />
         <ValueSelector
           possibility={possibility}
           onChange={(newPossibility: {
             children: Array<string>,
-            value?: any,
+            value?: any
           }) => onChange(newPossibility)}
           parentEnums={parentEnums}
           parentType={parentType}
@@ -73,7 +73,7 @@ export default function DependencyPossibility({
         />
       </div>
       <br />
-      <i className="fa fa-times" onClick={() => onDelete()} />
+      <i className='fa fa-times' onClick={() => onDelete()} />
     </div>
-  );
+  )
 }

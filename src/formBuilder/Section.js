@@ -1,77 +1,77 @@
 // @flow
-import * as React from "react";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import Select from "react-select";
-import { createUseStyles } from "react-jss";
-import { Alert, Input, UncontrolledTooltip } from "reactstrap";
-import FBCheckbox from "./checkbox/FBCheckbox";
-import Collapse from "./Collapse/Collapse";
-import CardModal from "./CardModal";
-import { CardDefaultParameterInputs } from "./defaults/defaultInputs";
-import Tooltip from "./Tooltip";
-import Add from "./Add";
-import Card from "./Card";
+import * as React from 'react'
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
+import Select from 'react-select'
+import { createUseStyles } from 'react-jss'
+import { Alert, Input, UncontrolledTooltip } from 'reactstrap'
+import FBCheckbox from './checkbox/FBCheckbox'
+import Collapse from './Collapse/Collapse'
+import CardModal from './CardModal'
+import { CardDefaultParameterInputs } from './defaults/defaultInputs'
+import Tooltip from './Tooltip'
+import Add from './Add'
+import Card from './Card'
 import {
   checkForUnsupportedFeatures,
   generateElementComponentsFromSchemas,
   countElementsFromSchema,
   addCardObj,
   addSectionObj,
-  onDragEnd,
-} from "./utils";
-import type { FormInput, Mods } from "./types";
+  onDragEnd
+} from './utils'
+import type { FormInput, Mods } from './types'
 
 const useStyles = createUseStyles({
   sectionContainer: {
-    "& .section-head": {
-      borderBottom: "1px solid var(--gray)",
-      margin: "0.5em 1.5em 0 1.5em",
-      "& h5": {
-        color: "black",
-        fontSize: "14px",
-        fontWeight: "bold",
-        margin: "0",
+    '& .section-head': {
+      borderBottom: '1px solid var(--gray)',
+      margin: '0.5em 1.5em 0 1.5em',
+      '& h5': {
+        color: 'black',
+        fontSize: '14px',
+        fontWeight: 'bold',
+        margin: '0'
       },
-      "& .section-entry": {
-        display: "inline-block",
-        margin: "0",
-        width: "33%",
-        textAlign: "left",
-        padding: "0.5em",
+      '& .section-entry': {
+        display: 'inline-block',
+        margin: '0',
+        width: '33%',
+        textAlign: 'left',
+        padding: '0.5em'
       },
-      "& .section-reference": { width: "100%" },
+      '& .section-reference': { width: '100%' }
     },
-    "& .section-footer": {
-      marginTop: "1em",
-      textAlign: "center",
-      i: { cursor: "pointer" },
+    '& .section-footer': {
+      marginTop: '1em',
+      textAlign: 'center',
+      i: { cursor: 'pointer' }
     },
-    "& .section-interactions": {
-      margin: "0.5em 1.5em",
-      textAlign: "left",
-      borderTop: "1px solid var(--gray)",
-      paddingTop: "1em",
-      "& .fa": { marginRight: "1em", borderRadius: "4px", padding: "0.25em" },
-      "& .fa-pencil, & .fa-arrow-up, & .fa-arrow-down": {
-        border: "1px solid #1d71ad",
-        color: "#1d71ad",
+    '& .section-interactions': {
+      margin: '0.5em 1.5em',
+      textAlign: 'left',
+      borderTop: '1px solid var(--gray)',
+      paddingTop: '1em',
+      '& .fa': { marginRight: '1em', borderRadius: '4px', padding: '0.25em' },
+      '& .fa-pencil, & .fa-arrow-up, & .fa-arrow-down': {
+        border: '1px solid #1d71ad',
+        color: '#1d71ad'
       },
-      "& .fa-trash": { border: "1px solid #de5354", color: "#de5354" },
-      "& .fa-arrow-up, & .fa-arrow-down": { marginRight: "0.5em" },
-      "& .fb-checkbox": {
-        display: "inline-block",
-        label: { color: "#9aa4ab" },
+      '& .fa-trash': { border: '1px solid #de5354', color: '#de5354' },
+      '& .fa-arrow-up, & .fa-arrow-down': { marginRight: '0.5em' },
+      '& .fb-checkbox': {
+        display: 'inline-block',
+        label: { color: '#9aa4ab' }
       },
-      "& .interactions-left, & .interactions-right": {
-        display: "inline-block",
-        width: "48%",
-        margin: "0 auto",
+      '& .interactions-left, & .interactions-right': {
+        display: 'inline-block',
+        width: '48%',
+        margin: '0 auto'
       },
-      "& .interactions-left": { textAlign: "left" },
-      "& .interactions-right": { textAlign: "right" },
-    },
-  },
-});
+      '& .interactions-left': { textAlign: 'left' },
+      '& .interactions-right': { textAlign: 'right' }
+    }
+  }
+})
 
 export default function Section({
   name,
@@ -99,7 +99,7 @@ export default function Section({
   setCardOpen,
   allFormInputs,
   mods,
-  categoryHash,
+  categoryHash
 }: {
   name: string,
   required: boolean,
@@ -114,7 +114,7 @@ export default function Section({
   onDependentsChange: (
     Array<{
       children: Array<string>,
-      value?: any,
+      value?: any
     }>
   ) => void,
   onRequireToggle: () => any,
@@ -128,7 +128,7 @@ export default function Section({
   reference?: string,
   dependents?: Array<{
     children: Array<string>,
-    value?: any,
+    value?: any
   }>,
   dependent?: boolean,
   parent?: string,
@@ -138,24 +138,24 @@ export default function Section({
   setCardOpen: (newState: boolean) => void,
   allFormInputs: { [string]: FormInput },
   mods?: Mods,
-  categoryHash: { [string]: string },
+  categoryHash: { [string]: string }
 }) {
-  const classes = useStyles();
+  const classes = useStyles()
   const unsupportedFeatures = checkForUnsupportedFeatures(
     schema || {},
     uischema || {},
     allFormInputs
-  );
-  const schemaData = schema || {};
-  const elementNum = countElementsFromSchema(schemaData);
-  const defaultCollapseStates = [...Array(elementNum)].map(() => false);
+  )
+  const schemaData = schema || {}
+  const elementNum = countElementsFromSchema(schemaData)
+  const defaultCollapseStates = [...Array(elementNum)].map(() => false)
   const [cardOpenArray, setCardOpenArray] = React.useState(
     defaultCollapseStates
-  );
+  )
   // keep name in state to avoid losing focus
-  const [keyName, setKeyName] = React.useState(name);
+  const [keyName, setKeyName] = React.useState(name)
   // keep requirements in state to avoid rapid updates
-  const [modalOpen, setModalOpen] = React.useState(false);
+  const [modalOpen, setModalOpen] = React.useState(false)
 
   return (
     <React.Fragment>
@@ -164,37 +164,37 @@ export default function Section({
         toggleCollapse={() => setCardOpen(!cardOpen)}
         title={
           <React.Fragment>
-            <span onClick={() => setCardOpen(!cardOpen)} className="label">
-              {schemaData.title || keyName}{" "}
+            <span onClick={() => setCardOpen(!cardOpen)} className='label'>
+              {schemaData.title || keyName}{' '}
               {parent ? (
                 <Tooltip
                   text={`Depends on ${parent}`}
                   id={`${keyName}_parentinfo`}
-                  type="alert"
+                  type='alert'
                 />
               ) : (
-                ""
+                ''
               )}
             </span>
-            <span className="arrows">
+            <span className='arrows'>
               <i
-                className="fa fa-arrow-up"
+                className='fa fa-arrow-up'
                 id={`${path}_moveupbiginfo`}
                 onClick={() => (onMoveUp ? onMoveUp() : {})}
-              ></i>
+              />
               <UncontrolledTooltip
-                placement="top"
+                placement='top'
                 target={`${path}_moveupbiginfo`}
               >
                 Move form element up
               </UncontrolledTooltip>
               <i
-                className="fa fa-arrow-down"
+                className='fa fa-arrow-down'
                 id={`${path}_movedownbiginfo`}
                 onClick={() => (onMoveDown ? onMoveDown() : {})}
-              ></i>
+              />
               <UncontrolledTooltip
-                placement="top"
+                placement='top'
                 target={`${path}_movedownbiginfo`}
               >
                 Move form element down
@@ -203,113 +203,113 @@ export default function Section({
           </React.Fragment>
         }
         className={`section-container ${classes.sectionContainer} ${
-          dependent ? "section-dependent" : ""
-        } ${reference ? "section-reference" : ""}`}
+          dependent ? 'section-dependent' : ''
+        } ${reference ? 'section-reference' : ''}`}
       >
         <div
-          className={`section-entries ${reference ? "section-reference" : ""}`}
+          className={`section-entries ${reference ? 'section-reference' : ''}`}
         >
-          <div className="section-head">
+          <div className='section-head'>
             {reference ? (
-              <div className="section-entry section-reference">
+              <div className='section-entry section-reference'>
                 <h5>Reference Section</h5>
                 <Select
                   value={{
                     value: reference,
-                    label: reference,
+                    label: reference
                   }}
-                  placeholder="Reference"
+                  placeholder='Reference'
                   options={Object.keys(definitionData).map((key) => ({
                     value: `#/definitions/${key}`,
-                    label: `#/definitions/${key}`,
+                    label: `#/definitions/${key}`
                   }))}
                   onChange={(val: any) => {
-                    onChange(schema, uischema, val.value);
+                    onChange(schema, uischema, val.value)
                   }}
-                  className="section-select"
+                  className='section-select'
                 />
               </div>
             ) : (
-              ""
+              ''
             )}
-            <div className="section-entry">
+            <div className='section-entry'>
               <h5>
-                Section Object Name{" "}
+                Section Object Name{' '}
                 <Tooltip
-                  text="The name that will appear in the backend of Servicely"
+                  text='The name that will appear in the backend of Servicely'
                   id={`${keyName}_nameinfo`}
-                  type="help"
+                  type='help'
                 />
               </h5>
               <Input
-                value={keyName || ""}
-                placeholder="Key"
-                type="text"
+                value={keyName || ''}
+                placeholder='Key'
+                type='text'
                 onChange={(ev: SyntheticInputEvent<HTMLInputElement>) =>
-                  setKeyName(ev.target.value.replace(/\W/g, "_"))
+                  setKeyName(ev.target.value.replace(/\W/g, '_'))
                 }
                 onBlur={(ev: SyntheticInputEvent<HTMLInputElement>) =>
                   onNameChange(ev.target.value)
                 }
-                className="card-text"
+                className='card-text'
                 readOnly={hideKey}
               />
             </div>
-            <div className="section-entry">
+            <div className='section-entry'>
               <h5>
-                Section Display Name{" "}
+                Section Display Name{' '}
                 <Tooltip
-                  text="The name Servicely will show to service requesters"
+                  text='The name Servicely will show to service requesters'
                   id={`${keyName}_titleinfo`}
-                  type="help"
+                  type='help'
                 />
               </h5>
               <Input
-                value={schemaData.title || ""}
-                placeholder="Title"
-                type="text"
+                value={schemaData.title || ''}
+                placeholder='Title'
+                type='text'
                 onChange={(ev: SyntheticInputEvent<HTMLInputElement>) =>
                   onChange(
                     {
                       ...schema,
-                      title: ev.target.value,
+                      title: ev.target.value
                     },
                     uischema
                   )
                 }
-                className="card-text"
+                className='card-text'
               />
             </div>
-            <div className="section-entry">
+            <div className='section-entry'>
               <h5>
-                Section Description{" "}
+                Section Description{' '}
                 <Tooltip
-                  text="This will appear as gray text in the service request form"
+                  text='This will appear as gray text in the service request form'
                   id={`${keyName}_descriptioninfo`}
-                  type="help"
+                  type='help'
                 />
               </h5>
               <Input
-                value={schemaData.description || ""}
-                placeholder="Description"
-                type="text"
+                value={schemaData.description || ''}
+                placeholder='Description'
+                type='text'
                 onChange={(ev: SyntheticInputEvent<HTMLInputElement>) =>
                   onChange(
                     {
                       ...schema,
-                      description: ev.target.value,
+                      description: ev.target.value
                     },
                     uischema
                   )
                 }
-                className="card-text"
+                className='card-text'
               />
             </div>
             <Alert
               style={{
-                display: unsupportedFeatures.length === 0 ? "none" : "block",
+                display: unsupportedFeatures.length === 0 ? 'none' : 'block'
               }}
-              color="warning"
+              color='warning'
             >
               <h5>Unsupported Features:</h5>
               {unsupportedFeatures.map((message) => (
@@ -317,7 +317,7 @@ export default function Section({
               ))}
             </Alert>
           </div>
-          <div className="section-body">
+          <div className='section-body'>
             <DragDropContext
               onDragEnd={(result) =>
                 onDragEnd(result, {
@@ -326,12 +326,12 @@ export default function Section({
                   onChange,
                   definitionData,
                   definitionUi,
-                  categoryHash,
+                  categoryHash
                 })
               }
-              className="section-body"
+              className='section-body'
             >
-              <Droppable droppableId="droppable">
+              <Droppable droppableId='droppable'>
                 {(providedDroppable) => (
                   <div
                     ref={providedDroppable.innerRef}
@@ -350,7 +350,7 @@ export default function Section({
                       mods,
                       categoryHash,
                       Card,
-                      Section,
+                      Section
                     }).map((element: any, index) => (
                       <Draggable
                         key={element.key}
@@ -374,28 +374,28 @@ export default function Section({
               </Droppable>
             </DragDropContext>
           </div>
-          <div className="section-footer">
+          <div className='section-footer'>
             <Add
               name={`${keyName}_inner`}
               addElem={(choice: string) => {
-                if (choice === "card") {
+                if (choice === 'card') {
                   addCardObj({
                     schema,
                     uischema,
                     onChange,
                     definitionData,
                     definitionUi,
-                    categoryHash,
-                  });
-                } else if (choice === "section") {
+                    categoryHash
+                  })
+                } else if (choice === 'section') {
                   addSectionObj({
                     schema,
                     uischema,
                     onChange,
                     definitionData,
                     definitionUi,
-                    categoryHash,
-                  });
+                    categoryHash
+                  })
                 }
               }}
               hidden={
@@ -404,27 +404,27 @@ export default function Section({
               }
             />
           </div>
-          <div className="section-interactions">
+          <div className='section-interactions'>
             <i
-              className="fa fa-pencil"
+              className='fa fa-pencil'
               id={`${path}_editinfo`}
               onClick={() => setModalOpen(true)}
-            ></i>
-            <UncontrolledTooltip placement="top" target={`${path}_editinfo`}>
+            />
+            <UncontrolledTooltip placement='top' target={`${path}_editinfo`}>
               Additional configurations for this form element
             </UncontrolledTooltip>
             <i
-              className="fa fa-trash"
+              className='fa fa-trash'
               id={`${path}_trashinfo`}
               onClick={() => (onDelete ? onDelete() : {})}
-            ></i>
-            <UncontrolledTooltip placement="top" target={`${path}_trashinfo`}>
+            />
+            <UncontrolledTooltip placement='top' target={`${path}_trashinfo`}>
               Delete form element
             </UncontrolledTooltip>
             <FBCheckbox
               onChangeValue={() => onRequireToggle()}
               isChecked={required}
-              label="Required"
+              label='Required'
               id={`${path}_required`}
             />
           </div>
@@ -435,12 +435,12 @@ export default function Section({
             neighborNames,
             name: keyName,
             schema,
-            type: "object",
+            type: 'object'
           }}
           isOpen={modalOpen}
           onClose={() => setModalOpen(false)}
           onChange={(newComponentProps: { [string]: any }) => {
-            onDependentsChange(newComponentProps.dependents);
+            onDependentsChange(newComponentProps.dependents)
           }}
           TypeSpecificParameters={CardDefaultParameterInputs}
         />
@@ -448,8 +448,8 @@ export default function Section({
       {addElem ? (
         <Add name={keyName} addElem={(choice: string) => addElem(choice)} />
       ) : (
-        ""
+        ''
       )}
     </React.Fragment>
-  );
+  )
 }

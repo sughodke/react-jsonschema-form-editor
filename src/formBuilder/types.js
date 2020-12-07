@@ -1,5 +1,5 @@
 // @flow
-import * as React from "react";
+import * as React from 'react'
 
 // any non object type is a card
 export type CardProps = {
@@ -12,15 +12,15 @@ export type CardProps = {
   // only defined if a dependency parent
   dependents?: Array<{
     children: Array<string>,
-    value?: any,
+    value?: any
   }>,
   // true if dependent on another card
   dependent?: boolean,
   parent?: string,
   // either 'section' or 'card'
   propType: string,
-  neighborNames: Array<string>,
-};
+  neighborNames: Array<string>
+}
 
 // object type elements are sections
 export type SectionProps = {
@@ -33,17 +33,17 @@ export type SectionProps = {
   // only defined if a dependency parent
   dependents?: Array<{
     children: Array<string>,
-    value?: any,
+    value?: any
   }>,
   // true if dependent on another card
   dependent?: boolean,
   // either 'section' or 'card'
   propType: string,
-  neighborNames: Array<string>,
-};
+  neighborNames: Array<string>
+}
 
 // the most generic form element
-export type ElementProps = CardProps & SectionProps;
+export type ElementProps = CardProps & SectionProps
 
 // parameters passed between card instances
 export type Parameters = {
@@ -53,17 +53,17 @@ export type Parameters = {
   definitionData: { [string]: any },
   definitionUi: { [string]: any },
   category: string,
-  "ui:option": { [string]: any },
-};
+  'ui:option': { [string]: any }
+}
 
 type DataType =
-  | "string"
-  | "number"
-  | "boolean"
-  | "integer"
-  | "array"
-  | "*"
-  | null;
+  | 'string'
+  | 'number'
+  | 'boolean'
+  | 'integer'
+  | 'array'
+  | '*'
+  | null
 
 type MatchType = {
   types: Array<DataType>,
@@ -72,8 +72,8 @@ type MatchType = {
   option?: { [string]: any },
   format?: string,
   $ref?: boolean,
-  enum?: boolean,
-};
+  enum?: boolean
+}
 
 // an abstract input type
 export type FormInput = {
@@ -83,10 +83,10 @@ export type FormInput = {
   // allowed keys for ui:options
   possibleOptions?: Array<string>,
   defaultDataSchema: {
-    [string]: any,
+    [string]: any
   },
   defaultUiSchema: {
-    [string]: any,
+    [string]: any
   },
   // the data schema type
   type: DataType,
@@ -94,37 +94,37 @@ export type FormInput = {
   cardBody: React.AbstractComponent<{
     parameters: Parameters,
     onChange: (newParams: Parameters) => void,
-    mods: { [string]: any },
+    mods: { [string]: any }
   }>,
   // inputs for the modal
   modalBody?: React.AbstractComponent<{
     parameters: Parameters,
-    onChange: (newParams: Parameters) => void,
-  }>,
-};
+    onChange: (newParams: Parameters) => void
+  }>
+}
 
 // optional properties that can add custom features to the form builder
 export type Mods = {
   customFormInputs?: {
-    [string]: FormInput,
+    [string]: FormInput
   },
   customComponents?: {
     button?: React.AbstractComponent<{
       onClick: () => void,
-      color: string,
+      color: string
     }>,
     checkbox?: React.AbstractComponent<{
       onChange: () => void,
       isChecked: boolean,
       label: string,
-      id: string,
-    }>,
+      id: string
+    }>
   },
   tooltipDescriptions?: {
     add?: string,
     cardObjectName?: string,
     cardDisplayName?: string,
     cardDescription?: string,
-    cardInputType?: string,
-  },
-};
+    cardInputType?: string
+  }
+}
