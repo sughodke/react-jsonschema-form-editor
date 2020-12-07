@@ -49,15 +49,11 @@ class Example extends Component {
 }
 ```
 
-For more usage examples, see the [Usage documentation page](https://github.com/ginkgobioworks/react-jsonschema-form-editor/blob/main/docs/Usage.md)
-
-## Documentation
-
-See the [documentation directory](https://github.com/ginkgobioworks/react-jsonschema-form-editor/blob/main/docs/) for more details.
+For more usage examples, see the [Usage documentation page](https://react-json-schema-form-editor.readthedocs.io/en/main/Usage/)
 
 ## Contributing
 
-See the [developer page](https://github.com/ginkgobioworks/react-jsonschema-form-editor/blob/main/docs/Developers.md) for information about improving the form builder.
+See the [developer page](https://react-json-schema-form-editor.readthedocs.io/en/main/Developers/) for information about improving the form builder.
 
 ## Credits
 

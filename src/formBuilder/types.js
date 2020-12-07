@@ -69,7 +69,6 @@ type MatchType = {
   types: Array<DataType>,
   widget?: string,
   field?: string,
-  option?: { [string]: any },
   format?: string,
   $ref?: boolean,
   enum?: boolean
@@ -107,18 +106,6 @@ export type FormInput = {
 export type Mods = {
   customFormInputs?: {
     [string]: FormInput
-  },
-  customComponents?: {
-    button?: React.AbstractComponent<{
-      onClick: () => void,
-      color: string
-    }>,
-    checkbox?: React.AbstractComponent<{
-      onChange: () => void,
-      isChecked: boolean,
-      label: string,
-      id: string
-    }>
   },
   tooltipDescriptions?: {
     add?: string,

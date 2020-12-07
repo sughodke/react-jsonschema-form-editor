@@ -41,7 +41,7 @@ The following is a list of currently supported default Input Types:
 
 \* See section on Array
 
-In addition to these input types, the Form Builder can be customized to accept and create custom input types. To see an example, see the [usage doc](https://github.com/ginkgobioworks/react-jsonschema-form-editor/blob/main/docs/Usage.md) example.
+In addition to these input types, the Form Builder can be customized to accept and create custom input types. To see an example, see the [usage doc](Usage.md) example.
 
 ### Cards
 
@@ -97,5 +97,5 @@ When a card is of a reference type, many of the usual options are no longer edit
 
 ![reference](img/reference.png)
 
-In the [usage doc](https://github.com/ginkgobioworks/react-jsonschema-form-editor/blob/main/docs/Usage.md), there is an optional additional component called the **PreDefinedGallery** that allows a builder to also visually build the definitions. It is presented
+In the [usage doc](Usage.md), there is an optional additional component called the **PreDefinedGallery** that allows a builder to also visually build the definitions. It is presented
 
