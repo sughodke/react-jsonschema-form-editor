@@ -1,14 +1,7 @@
 // @flow
 
 import React, { useState } from 'react'
-import {
-  Popover,
-  PopoverHeader,
-  PopoverBody,
-  UncontrolledTooltip
-} from 'reactstrap'
 import { createUseStyles } from 'react-jss'
-import FBRadioGroup from './radio/FBRadioGroup'
 
 const useStyles = createUseStyles({
   addDetails: {
@@ -41,67 +34,38 @@ export default function Add({
 }) {
   const classes = useStyles()
   const [popoverOpen, setPopoverOpen] = useState(false)
-  const [createChoice, setCreateChoice] = useState('card')
 
   return (
     <div style={{ display: hidden ? 'none' : 'initial' }}>
       <a onClick={() => setPopoverOpen(true)} id={`${name}_add`}>
         <i className='fa fa-plus-square card-add' />Add!
       </a>
-      <UncontrolledTooltip placement='top' target={`${name}_add`}>
-        Create new form element
-      </UncontrolledTooltip>
-      <Popover
-        placement='bottom'
-        target={`${name}_add`}
-        isOpen={popoverOpen}
-        toggle={() => setPopoverOpen(false)}
-        className={`add-details ${classes.addDetails}`}
-        id={`${name}_add_popover`}
-      >
-        <PopoverHeader>Create New</PopoverHeader>
-        <PopoverBody>
-          <FBRadioGroup
-            className='choose-create'
-            defaultValue={createChoice}
-            horizontal={false}
-            options={[
-              {
-                value: 'card',
-                label: 'Form element'
-              },
-              {
-                value: 'section',
-                label: 'Form section'
-              }
-            ]}
-            onChange={(selection) => {
-              setCreateChoice(selection)
-            }}
-          />
+      <div>
+        <div>
           <div className='left'>
             <button
               className='inline-block align-middle text-center select-none border font-normal whitespace-no-wrap py-2 px-4 rounded text-base leading-normal no-underline'
-              onClick={() => setPopoverOpen(false)}
+              onClick={() =>
+                addElem('section')
+              }
               color='secondary'
             >
-              Cancel
+              Create Section
             </button>
           </div>
           <div className='right'>
             <button
               className='inline-block align-middle text-center select-none border font-normal whitespace-no-wrap py-2 px-4 rounded text-base leading-normal no-underline'
               onClick={() => {
-                addElem(createChoice)
-                setPopoverOpen(false)
+                addElem('card')
               }}
               color='primary'
             >
-              Create
+              Create Card
             </button>
           </div>
-        </PopoverBody>
-      </Popover>
+        </div>
+      </div>
     </div>
   )
 }
