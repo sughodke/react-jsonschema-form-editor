@@ -1,8 +1,8 @@
 // @flow
 
-import * as React from 'react'
-import { getCardBody } from './utils'
-import type { Parameters, Mods, FormInput } from './types'
+import * as React from 'react';
+import { getCardBody } from './utils';
+import type { Parameters, Mods, FormInput } from './types';
 
 // specify the inputs required for any type of object
 export default function GeneralParameterInputs({
@@ -10,18 +10,18 @@ export default function GeneralParameterInputs({
   parameters,
   onChange,
   mods,
-  allFormInputs
+  allFormInputs,
 }: {
   category: string,
   parameters: Parameters,
   onChange: (newParams: Parameters) => void,
   mods?: Mods,
-  allFormInputs: { [string]: FormInput }
+  allFormInputs: { [string]: FormInput },
 }) {
-  const CardBody = getCardBody(category, allFormInputs)
+  const CardBody = getCardBody(category, allFormInputs);
   return (
     <div>
       <CardBody parameters={parameters} onChange={onChange} mods={mods || {}} />
     </div>
-  )
+  );
 }

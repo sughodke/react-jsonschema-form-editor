@@ -1,4 +1,4 @@
-import FormBuilder from './formBuilder/FormBuilder'
-import PreDefinedGallery from './formBuilder/PreDefinedGallery'
+import FormBuilder from './formBuilder/FormBuilder';
+import PreDefinedGallery from './formBuilder/PreDefinedGallery';
 
-export { FormBuilder, PreDefinedGallery }
+export { FormBuilder, PreDefinedGallery };

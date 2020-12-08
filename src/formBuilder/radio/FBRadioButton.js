@@ -1,7 +1,7 @@
 // @flow
 
-import React from 'react'
-import classnames from 'classnames'
+import React from 'react';
+import classnames from 'classnames';
 
 type Props = {
   label: string | number,
@@ -12,8 +12,8 @@ type Props = {
   disabled?: boolean,
   autoFocus?: boolean,
   children?: any,
-  onChange: (any) => void
-}
+  onChange: (any) => void,
+};
 
 export default function FBRadioButton(props: Props) {
   const {
@@ -24,9 +24,9 @@ export default function FBRadioButton(props: Props) {
     onChange,
     required,
     disabled,
-    autoFocus
-  } = props
-  const classes = classnames('fb-radio-button', { disabled })
+    autoFocus,
+  } = props;
+  const classes = classnames('fb-radio-button', { disabled });
   return (
     <label className={classes} key={value}>
       {props.children}
@@ -43,5 +43,5 @@ export default function FBRadioButton(props: Props) {
       <span className='fb-custom-radio-button' />
       {label}
     </label>
-  )
+  );
 }

@@ -1,9 +1,9 @@
 // @flow
 
-import * as React from 'react'
-import Tooltip from '../Tooltip'
-import CardSelector from './CardSelector'
-import ValueSelector from './ValueSelector'
+import * as React from 'react';
+import Tooltip from '../Tooltip';
+import CardSelector from './CardSelector';
+import ValueSelector from './ValueSelector';
 
 // a possible dependency
 export default function DependencyPossibility({
@@ -15,23 +15,23 @@ export default function DependencyPossibility({
   parentEnums,
   parentType,
   parentName,
-  parentSchema
+  parentSchema,
 }: {
   possibility: {
     children: Array<string>,
-    value?: any
+    value?: any,
   },
   neighborNames: Array<string>,
   path: string,
   onChange: (newPossibility: {
     children: Array<string>,
-    value?: any
+    value?: any,
   }) => void,
   onDelete: () => void,
   parentEnums?: Array<string | number>,
   parentType?: string,
   parentName?: string,
-  parentSchema?: string
+  parentSchema?: string,
 }) {
   return (
     <div className='form-dependency-condition'>
@@ -63,7 +63,7 @@ export default function DependencyPossibility({
           possibility={possibility}
           onChange={(newPossibility: {
             children: Array<string>,
-            value?: any
+            value?: any,
           }) => onChange(newPossibility)}
           parentEnums={parentEnums}
           parentType={parentType}
@@ -75,5 +75,5 @@ export default function DependencyPossibility({
       <br />
       <i className='fa fa-times' onClick={() => onDelete()} />
     </div>
-  )
+  );
 }

@@ -1,10 +1,10 @@
 // @flow
 
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-import classnames from "classnames";
-import { TabContent, TabPane, Nav, NavItem, NavLink } from "reactstrap";
-import { createUseStyles } from "react-jss";
+import classnames from 'classnames';
+import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
+import { createUseStyles } from 'react-jss';
 
 type TabSpec = {
   name: string,
@@ -14,34 +14,34 @@ type TabSpec = {
 
 const useStyles = createUseStyles({
   portalTabs: {
-    "& .tab-content": {
-      "& .tab-pane > .tab-pane": {
-        display: "none",
-        padding: "2em",
+    '& .tab-content': {
+      '& .tab-pane > .tab-pane': {
+        display: 'none',
+        padding: '2em',
       },
-      "& .active > .tab-pane": {
-        display: "block",
+      '& .active > .tab-pane': {
+        display: 'block',
       },
     },
-    "& .nav": {
-      "& .nav-link": {
-        position: "relative",
-        display: "inline-flex",
-        padding: "10px",
+    '& .nav': {
+      '& .nav-link': {
+        position: 'relative',
+        display: 'inline-flex',
+        padding: '10px',
       },
-      "& li": {
-        display: "inline-block",
+      '& li': {
+        display: 'inline-block',
       },
-      "& .nav-item": {
-        "& .active": {
-          color: "#212529 !important",
-          "font-weight": 600,
+      '& .nav-item': {
+        '& .active': {
+          color: '#212529 !important',
+          'font-weight': 600,
         },
-        "&:hover": {
-          cursor: "pointer",
+        '&:hover': {
+          cursor: 'pointer',
         },
-        "& a": {
-          color: "#ccc",
+        '& a': {
+          color: '#ccc',
         },
       },
     },
@@ -83,14 +83,14 @@ export default function Tabs({
       <TabContent
         activeTab={activeTab}
         className={classnames({
-          "with-separator": withSeparator,
+          'with-separator': withSeparator,
         })}
       >
         <React.Fragment>
           {tabs.map(({ content }, i) => (
             <TabPane key={i} tabId={i}>
               {activeTab === i && (preventRerender ? true : content)}
-              {preventRerender ? content : ""}
+              {preventRerender ? content : ''}
             </TabPane>
           ))}
         </React.Fragment>

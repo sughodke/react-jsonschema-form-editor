@@ -1,6 +1,6 @@
 // @flow
 
-import React from "react";
+import React from 'react';
 
 type Props = {
   children: any,
@@ -21,7 +21,7 @@ Provides the option to attempt rendering the children again
 class ErrorBoundary extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = { hasError: false, error: "" };
+    this.state = { hasError: false, error: '' };
   }
 
   componentDidCatch(error: any) {
@@ -42,8 +42,8 @@ class ErrorBoundary extends React.Component<Props, State> {
           </p>
           <button
             onClick={() => {
-              this.setState({ hasError: false, error: "" });
-              if (this.props.onErr) this.props.onErr("");
+              this.setState({ hasError: false, error: '' });
+              if (this.props.onErr) this.props.onErr('');
             }}
           >
             Try Again

@@ -1,15 +1,15 @@
 // @flow
 
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import {
   Popover,
   PopoverHeader,
   PopoverBody,
   UncontrolledTooltip,
-  Button
-} from 'reactstrap'
-import { createUseStyles } from 'react-jss'
-import FBRadioGroup from './radio/FBRadioGroup'
+  Button,
+} from 'reactstrap';
+import { createUseStyles } from 'react-jss';
+import FBRadioGroup from './radio/FBRadioGroup';
 
 const useStyles = createUseStyles({
   addDetails: {
@@ -24,25 +24,25 @@ const useStyles = createUseStyles({
           '& .fb-radio-group': { display: 'block' },
           '& div': { margin: '0', display: 'inline-block', width: '50%' },
           '& .left': { textAlign: 'left' },
-          '& .right': { textAlign: 'right' }
-        }
-      }
-    }
-  }
-})
+          '& .right': { textAlign: 'right' },
+        },
+      },
+    },
+  },
+});
 
 export default function Add({
   name,
   addElem,
-  hidden
+  hidden,
 }: {
   name: string,
   addElem: (choice: string) => void,
-  hidden?: boolean
+  hidden?: boolean,
 }) {
-  const classes = useStyles()
-  const [popoverOpen, setPopoverOpen] = useState(false)
-  const [createChoice, setCreateChoice] = useState('card')
+  const classes = useStyles();
+  const [popoverOpen, setPopoverOpen] = useState(false);
+  const [createChoice, setCreateChoice] = useState('card');
 
   return (
     <div style={{ display: hidden ? 'none' : 'initial' }}>
@@ -71,15 +71,15 @@ export default function Add({
             options={[
               {
                 value: 'card',
-                label: 'Form element'
+                label: 'Form element',
               },
               {
                 value: 'section',
-                label: 'Form section'
-              }
+                label: 'Form section',
+              },
             ]}
             onChange={(selection) => {
-              setCreateChoice(selection)
+              setCreateChoice(selection);
             }}
           />
           <div className='left'>
@@ -90,8 +90,8 @@ export default function Add({
           <div className='right'>
             <Button
               onClick={() => {
-                addElem(createChoice)
-                setPopoverOpen(false)
+                addElem(createChoice);
+                setPopoverOpen(false);
               }}
               color='primary'
             >
@@ -101,5 +101,5 @@ export default function Add({
         </PopoverBody>
       </Popover>
     </div>
-  )
+  );
 }

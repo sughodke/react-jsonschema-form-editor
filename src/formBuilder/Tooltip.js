@@ -1,33 +1,33 @@
 // @flow
 
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
-import React from 'react'
-import type { Node } from 'react'
-import { UncontrolledTooltip } from 'reactstrap'
-import { createUseStyles } from 'react-jss'
+import React from 'react';
+import type { Node } from 'react';
+import { UncontrolledTooltip } from 'reactstrap';
+import { createUseStyles } from 'react-jss';
 
 const typeMap = {
   alert: `fas fa-asterisk`,
-  help: 'fa fa-question-circle'
-}
+  help: 'fa fa-question-circle',
+};
 
 const useStyles = createUseStyles({
   toolTip: {
     color: 'white',
-    'background-color': 'black'
-  }
-})
+    'background-color': 'black',
+  },
+});
 
 export default function Example({
   text,
   type,
-  id
+  id,
 }: {
   text: Node,
   type: 'alert' | 'help',
-  id: string
+  id: string,
 }) {
-  const classes = useStyles()
+  const classes = useStyles();
 
   return (
     <React.Fragment>
@@ -47,5 +47,5 @@ export default function Example({
         {text}
       </UncontrolledTooltip>
     </React.Fragment>
-  )
+  );
 }

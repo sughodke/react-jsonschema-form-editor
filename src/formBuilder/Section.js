@@ -1,25 +1,25 @@
 // @flow
-import * as React from 'react'
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
-import Select from 'react-select'
-import { createUseStyles } from 'react-jss'
-import { Alert, Input, UncontrolledTooltip } from 'reactstrap'
-import FBCheckbox from './checkbox/FBCheckbox'
-import Collapse from './Collapse/Collapse'
-import CardModal from './CardModal'
-import { CardDefaultParameterInputs } from './defaults/defaultInputs'
-import Tooltip from './Tooltip'
-import Add from './Add'
-import Card from './Card'
+import * as React from 'react';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import Select from 'react-select';
+import { createUseStyles } from 'react-jss';
+import { Alert, Input, UncontrolledTooltip } from 'reactstrap';
+import FBCheckbox from './checkbox/FBCheckbox';
+import Collapse from './Collapse/Collapse';
+import CardModal from './CardModal';
+import { CardDefaultParameterInputs } from './defaults/defaultInputs';
+import Tooltip from './Tooltip';
+import Add from './Add';
+import Card from './Card';
 import {
   checkForUnsupportedFeatures,
   generateElementComponentsFromSchemas,
   countElementsFromSchema,
   addCardObj,
   addSectionObj,
-  onDragEnd
-} from './utils'
-import type { FormInput, Mods } from './types'
+  onDragEnd,
+} from './utils';
+import type { FormInput, Mods } from './types';
 
 const useStyles = createUseStyles({
   sectionContainer: {
@@ -30,21 +30,21 @@ const useStyles = createUseStyles({
         color: 'black',
         fontSize: '14px',
         fontWeight: 'bold',
-        margin: '0'
+        margin: '0',
       },
       '& .section-entry': {
         display: 'inline-block',
         margin: '0',
         width: '33%',
         textAlign: 'left',
-        padding: '0.5em'
+        padding: '0.5em',
       },
-      '& .section-reference': { width: '100%' }
+      '& .section-reference': { width: '100%' },
     },
     '& .section-footer': {
       marginTop: '1em',
       textAlign: 'center',
-      i: { cursor: 'pointer' }
+      i: { cursor: 'pointer' },
     },
     '& .section-interactions': {
       margin: '0.5em 1.5em',
@@ -54,24 +54,24 @@ const useStyles = createUseStyles({
       '& .fa': { marginRight: '1em', borderRadius: '4px', padding: '0.25em' },
       '& .fa-pencil, & .fa-arrow-up, & .fa-arrow-down': {
         border: '1px solid #1d71ad',
-        color: '#1d71ad'
+        color: '#1d71ad',
       },
       '& .fa-trash': { border: '1px solid #de5354', color: '#de5354' },
       '& .fa-arrow-up, & .fa-arrow-down': { marginRight: '0.5em' },
       '& .fb-checkbox': {
         display: 'inline-block',
-        label: { color: '#9aa4ab' }
+        label: { color: '#9aa4ab' },
       },
       '& .interactions-left, & .interactions-right': {
         display: 'inline-block',
         width: '48%',
-        margin: '0 auto'
+        margin: '0 auto',
       },
       '& .interactions-left': { textAlign: 'left' },
-      '& .interactions-right': { textAlign: 'right' }
-    }
-  }
-})
+      '& .interactions-right': { textAlign: 'right' },
+    },
+  },
+});
 
 export default function Section({
   name,
@@ -99,7 +99,7 @@ export default function Section({
   setCardOpen,
   allFormInputs,
   mods,
-  categoryHash
+  categoryHash,
 }: {
   name: string,
   required: boolean,
@@ -108,14 +108,14 @@ export default function Section({
   onChange: (
     schema: { [string]: any },
     uischema: { [string]: any },
-    ref?: string
+    ref?: string,
   ) => void,
   onNameChange: (string) => void,
   onDependentsChange: (
     Array<{
       children: Array<string>,
-      value?: any
-    }>
+      value?: any,
+    }>,
   ) => void,
   onRequireToggle: () => any,
   onDelete: () => any,
@@ -128,7 +128,7 @@ export default function Section({
   reference?: string,
   dependents?: Array<{
     children: Array<string>,
-    value?: any
+    value?: any,
   }>,
   dependent?: boolean,
   parent?: string,
@@ -138,24 +138,24 @@ export default function Section({
   setCardOpen: (newState: boolean) => void,
   allFormInputs: { [string]: FormInput },
   mods?: Mods,
-  categoryHash: { [string]: string }
+  categoryHash: { [string]: string },
 }) {
-  const classes = useStyles()
+  const classes = useStyles();
   const unsupportedFeatures = checkForUnsupportedFeatures(
     schema || {},
     uischema || {},
-    allFormInputs
-  )
-  const schemaData = schema || {}
-  const elementNum = countElementsFromSchema(schemaData)
-  const defaultCollapseStates = [...Array(elementNum)].map(() => false)
+    allFormInputs,
+  );
+  const schemaData = schema || {};
+  const elementNum = countElementsFromSchema(schemaData);
+  const defaultCollapseStates = [...Array(elementNum)].map(() => false);
   const [cardOpenArray, setCardOpenArray] = React.useState(
-    defaultCollapseStates
-  )
+    defaultCollapseStates,
+  );
   // keep name in state to avoid losing focus
-  const [keyName, setKeyName] = React.useState(name)
+  const [keyName, setKeyName] = React.useState(name);
   // keep requirements in state to avoid rapid updates
-  const [modalOpen, setModalOpen] = React.useState(false)
+  const [modalOpen, setModalOpen] = React.useState(false);
 
   return (
     <React.Fragment>
@@ -216,15 +216,15 @@ export default function Section({
                 <Select
                   value={{
                     value: reference,
-                    label: reference
+                    label: reference,
                   }}
                   placeholder='Reference'
                   options={Object.keys(definitionData).map((key) => ({
                     value: `#/definitions/${key}`,
-                    label: `#/definitions/${key}`
+                    label: `#/definitions/${key}`,
                   }))}
                   onChange={(val: any) => {
-                    onChange(schema, uischema, val.value)
+                    onChange(schema, uischema, val.value);
                   }}
                   className='section-select'
                 />
@@ -272,9 +272,9 @@ export default function Section({
                   onChange(
                     {
                       ...schema,
-                      title: ev.target.value
+                      title: ev.target.value,
                     },
-                    uischema
+                    uischema,
                   )
                 }
                 className='card-text'
@@ -297,9 +297,9 @@ export default function Section({
                   onChange(
                     {
                       ...schema,
-                      description: ev.target.value
+                      description: ev.target.value,
                     },
-                    uischema
+                    uischema,
                   )
                 }
                 className='card-text'
@@ -307,7 +307,7 @@ export default function Section({
             </div>
             <Alert
               style={{
-                display: unsupportedFeatures.length === 0 ? 'none' : 'block'
+                display: unsupportedFeatures.length === 0 ? 'none' : 'block',
               }}
               color='warning'
             >
@@ -326,7 +326,7 @@ export default function Section({
                   onChange,
                   definitionData,
                   definitionUi,
-                  categoryHash
+                  categoryHash,
                 })
               }
               className='section-body'
@@ -350,7 +350,7 @@ export default function Section({
                       mods,
                       categoryHash,
                       Card,
-                      Section
+                      Section,
                     }).map((element: any, index) => (
                       <Draggable
                         key={element.key}
@@ -385,8 +385,8 @@ export default function Section({
                     onChange,
                     definitionData,
                     definitionUi,
-                    categoryHash
-                  })
+                    categoryHash,
+                  });
                 } else if (choice === 'section') {
                   addSectionObj({
                     schema,
@@ -394,8 +394,8 @@ export default function Section({
                     onChange,
                     definitionData,
                     definitionUi,
-                    categoryHash
-                  })
+                    categoryHash,
+                  });
                 }
               }}
               hidden={
@@ -435,12 +435,12 @@ export default function Section({
             neighborNames,
             name: keyName,
             schema,
-            type: 'object'
+            type: 'object',
           }}
           isOpen={modalOpen}
           onClose={() => setModalOpen(false)}
           onChange={(newComponentProps: { [string]: any }) => {
-            onDependentsChange(newComponentProps.dependents)
+            onDependentsChange(newComponentProps.dependents);
           }}
           TypeSpecificParameters={CardDefaultParameterInputs}
         />
@@ -451,5 +451,5 @@ export default function Section({
         ''
       )}
     </React.Fragment>
-  )
+  );
 }

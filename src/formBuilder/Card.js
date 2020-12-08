@@ -1,15 +1,15 @@
 // @flow
 
-import * as React from 'react'
-import { UncontrolledTooltip } from 'reactstrap'
-import { createUseStyles } from 'react-jss'
-import FBCheckbox from './checkbox/FBCheckbox'
-import Collapse from './Collapse/Collapse'
-import CardModal from './CardModal'
-import CardGeneralParameterInputs from './CardGeneralParameterInputs'
-import Add from './Add'
-import Tooltip from './Tooltip'
-import type { Parameters, Mods, FormInput } from './types'
+import * as React from 'react';
+import { UncontrolledTooltip } from 'reactstrap';
+import { createUseStyles } from 'react-jss';
+import FBCheckbox from './checkbox/FBCheckbox';
+import Collapse from './Collapse/Collapse';
+import CardModal from './CardModal';
+import CardGeneralParameterInputs from './CardGeneralParameterInputs';
+import Add from './Add';
+import Tooltip from './Tooltip';
+import type { Parameters, Mods, FormInput } from './types';
 
 const useStyles = createUseStyles({
   cardEntries: {
@@ -19,29 +19,29 @@ const useStyles = createUseStyles({
       color: 'black',
       'font-size': '14px',
       'font-weight': 'bold',
-      margin: 0
+      margin: 0,
     },
     '& .card-entry': {
       display: 'inline-block',
       margin: 0,
       width: '50%',
       'text-align': 'left',
-      padding: '0.5em'
+      padding: '0.5em',
     },
     '& input': {
       border: '1px solid gray',
-      'border-radius': '4px'
+      'border-radius': '4px',
     },
     '& .card-category-options': {
-      padding: '.5em'
+      padding: '.5em',
     },
     '& .card-select': {
       border: '1px solid var(--gray)',
-      'border-radius': '4px'
+      'border-radius': '4px',
     },
     '& .card-array': {
       '& .fa-plus-square': { display: 'none' },
-      '& .section-entries': { '& .fa-plus-square': { display: 'initial' } }
+      '& .section-entries': { '& .fa-plus-square': { display: 'initial' } },
     },
     '& .card-enum': {
       display: 'flex',
@@ -57,16 +57,16 @@ const useStyles = createUseStyles({
         width: '100%',
         display: 'flex',
         flexDirection: 'row',
-        '& h5': { width: '50%', fontWeight: 'bold', fontSize: '14px' }
+        '& h5': { width: '50%', fontWeight: 'bold', fontSize: '14px' },
       },
       '& i': { cursor: 'pointer' },
       '& .card-enum-option': {
         width: '100%',
         display: 'flex',
         flexDirection: 'row',
-        '& input': { width: '80%', marginRight: '1em', marginBottom: '0.5em' }
-      }
-    }
+        '& input': { width: '80%', marginRight: '1em', marginBottom: '0.5em' },
+      },
+    },
   },
   cardInteractions: {
     margin: '.5em 1.5em',
@@ -78,12 +78,12 @@ const useStyles = createUseStyles({
     '& .interactions-left, & .interactions-right': {
       display: 'inline-block',
       width: '48%',
-      margin: '0 auto'
+      margin: '0 auto',
     },
     '& .interactions-left': { textAlign: 'left' },
-    '& .interactions-right': { textAlign: 'right' }
-  }
-})
+    '& .interactions-right': { textAlign: 'right' },
+  },
+});
 
 export default function Card({
   componentProps,
@@ -96,11 +96,11 @@ export default function Card({
   cardOpen,
   setCardOpen,
   allFormInputs,
-  mods
+  mods,
 }: {
   componentProps: {
     [string]: string | number | boolean | Array<string | number>,
-    path: string
+    path: string,
   },
   onChange: ({ [string]: any }) => void,
   onDelete?: () => void,
@@ -108,16 +108,16 @@ export default function Card({
   onMoveDown?: () => void,
   TypeSpecificParameters: React.AbstractComponent<{
     parameters: Parameters,
-    onChange: (newParams: Parameters) => void
+    onChange: (newParams: Parameters) => void,
   }>,
   addElem?: (choice: string) => void,
   cardOpen: boolean,
   setCardOpen: (newState: boolean) => void,
   mods?: Mods,
-  allFormInputs: { [string]: FormInput }
+  allFormInputs: { [string]: FormInput },
 }) {
-  const classes = useStyles()
-  const [modalOpen, setModalOpen] = React.useState(false)
+  const classes = useStyles();
+  const [modalOpen, setModalOpen] = React.useState(false);
 
   return (
     <React.Fragment>
@@ -212,7 +212,7 @@ export default function Card({
             onChangeValue={() =>
               onChange({
                 ...componentProps,
-                required: !componentProps.required
+                required: !componentProps.required,
               })
             }
             isChecked={!!componentProps.required}
@@ -229,9 +229,9 @@ export default function Card({
           isOpen={modalOpen}
           onClose={() => setModalOpen(false)}
           onChange={(newComponentProps: {
-            [string]: string | number | boolean | Array<string | number>
+            [string]: string | number | boolean | Array<string | number>,
           }) => {
-            onChange(newComponentProps)
+            onChange(newComponentProps);
           }}
           TypeSpecificParameters={TypeSpecificParameters}
         />
@@ -245,5 +245,5 @@ export default function Card({
         ''
       )}
     </React.Fragment>
-  )
+  );
 }

@@ -1,11 +1,11 @@
 // @flow
 
-import * as React from 'react'
-import { Input } from 'reactstrap'
-import CardEnumOptions from '../CardEnumOptions'
-import CardSelector from './CardSelector'
-import FBCheckbox from '../checkbox/FBCheckbox'
-import { parse } from '../utils'
+import * as React from 'react';
+import { Input } from 'reactstrap';
+import CardEnumOptions from '../CardEnumOptions';
+import CardSelector from './CardSelector';
+import FBCheckbox from '../checkbox/FBCheckbox';
+import { parse } from '../utils';
 
 // handle value options for different card types
 export default function ValueSelector({
@@ -15,26 +15,26 @@ export default function ValueSelector({
   parentType,
   parentName,
   parentSchema,
-  path
+  path,
 }: {
   possibility: {
     children: Array<string>,
-    value: any
+    value: any,
   },
   onChange: (newPossibility: {
     children: Array<string>,
-    value?: any
+    value?: any,
   }) => void,
   parentEnums?: Array<string | number>,
   parentType?: string,
   parentName?: string,
   parentSchema?: string,
-  path: string
+  path: string,
 }) {
   if (possibility.value) {
     // enum type
     if (parentEnums) {
-      const enumType = typeof parentEnums[0] === 'number' ? 'number' : 'string'
+      const enumType = typeof parentEnums[0] === 'number' ? 'number' : 'string';
       if (enumType === 'string')
         return (
           <CardSelector
@@ -46,7 +46,7 @@ export default function ValueSelector({
             placeholder='Allowed value'
             path={path}
           />
-        )
+        );
       if (enumType === 'number')
         return (
           <CardSelector
@@ -56,14 +56,14 @@ export default function ValueSelector({
               onChange({
                 ...possibility,
                 value: {
-                  enum: chosenChoices.map((val) => Number.parseFloat(val))
-                }
+                  enum: chosenChoices.map((val) => Number.parseFloat(val)),
+                },
               })
             }
             placeholder='Allowed value'
             path={path}
           />
-        )
+        );
     }
     // check box type
     if (parentType === 'boolean') {
@@ -73,30 +73,30 @@ export default function ValueSelector({
             if (possibility.value.enum && possibility.value.enum[0]) {
               onChange({
                 ...possibility,
-                value: { enum: [false] }
-              })
+                value: { enum: [false] },
+              });
             } else {
               onChange({
                 ...possibility,
-                value: { enum: [true] }
-              })
+                value: { enum: [true] },
+              });
             }
           }}
           isChecked={possibility.value.enum && possibility.value.enum[0]}
           label={parentName}
         />
-      )
+      );
     }
     // object type
     if (parentType === 'object') {
-      const enumArr = (possibility.value.enum: Array<any>)
+      const enumArr = (possibility.value.enum: Array<any>);
 
       return (
         <div>
           {enumArr.map((combination, index) => (
             <li key={`${path}_possibleValue${index}`}>
               {Object.keys(combination).map((key) => {
-                const val = combination[key]
+                const val = combination[key];
                 return (
                   <div key={key}>
                     <h5>{key}:</h5>
@@ -108,18 +108,18 @@ export default function ValueSelector({
                             placeholder='String value'
                             type='string'
                             onChange={(ev: any) => {
-                              const newVal = ev.target.value
-                              const oldCombo = possibility.value.enum[index]
+                              const newVal = ev.target.value;
+                              const oldCombo = possibility.value.enum[index];
                               onChange({
                                 ...possibility,
                                 value: {
                                   enum: [
                                     ...enumArr.slice(0, index),
                                     { ...oldCombo, [key]: newVal },
-                                    ...enumArr.slice(index + 1)
-                                  ]
-                                }
-                              })
+                                    ...enumArr.slice(index + 1),
+                                  ],
+                                },
+                              });
                             }}
                             className='card-modal-text'
                           />
@@ -130,18 +130,18 @@ export default function ValueSelector({
                             placeholder='Number value'
                             type='number'
                             onChange={(ev: any) => {
-                              const newVal = Number.parseFloat(ev.target.value)
-                              const oldCombo = possibility.value.enum[index]
+                              const newVal = Number.parseFloat(ev.target.value);
+                              const oldCombo = possibility.value.enum[index];
                               onChange({
                                 ...possibility,
                                 value: {
                                   enum: [
                                     ...enumArr.slice(0, index),
                                     { ...oldCombo, [key]: newVal },
-                                    ...enumArr.slice(index + 1)
-                                  ]
-                                }
-                              })
+                                    ...enumArr.slice(index + 1),
+                                  ],
+                                },
+                              });
                             }}
                             className='card-modal-number'
                           />
@@ -152,24 +152,24 @@ export default function ValueSelector({
                             placeholder='Array in JSON'
                             type='string'
                             onChange={(ev: any) => {
-                              let newVal = val
+                              let newVal = val;
                               try {
-                                newVal = JSON.parse(ev.target.value)
+                                newVal = JSON.parse(ev.target.value);
                               } catch (error) {
                                 // eslint-disable-next-line no-console
-                                console.error('invalid JSON array input')
+                                console.error('invalid JSON array input');
                               }
-                              const oldCombo = possibility.value.enum[index]
+                              const oldCombo = possibility.value.enum[index];
                               onChange({
                                 ...possibility,
                                 value: {
                                   enum: [
                                     ...enumArr.slice(0, index),
                                     { ...oldCombo, [key]: newVal },
-                                    ...enumArr.slice(index + 1)
-                                  ]
-                                }
-                              })
+                                    ...enumArr.slice(index + 1),
+                                  ],
+                                },
+                              });
                             }}
                             className='card-modal-text'
                           />
@@ -180,32 +180,32 @@ export default function ValueSelector({
                             placeholder='Object in JSON'
                             type='string'
                             onChange={(ev: any) => {
-                              let newVal = val
+                              let newVal = val;
                               try {
-                                newVal = JSON.parse(ev.target.value)
+                                newVal = JSON.parse(ev.target.value);
                               } catch (error) {
                                 // eslint-disable-next-line no-console
-                                console.error('invalid JSON object input')
+                                console.error('invalid JSON object input');
                               }
-                              const oldCombo = possibility.value.enum[index]
+                              const oldCombo = possibility.value.enum[index];
                               onChange({
                                 ...possibility,
                                 value: {
                                   enum: [
                                     ...enumArr.slice(0, index),
                                     { ...oldCombo, [key]: newVal },
-                                    ...enumArr.slice(index + 1)
-                                  ]
-                                }
-                              })
+                                    ...enumArr.slice(index + 1),
+                                  ],
+                                },
+                              });
                             }}
                             className='card-modal-text'
                           />
-                        )
+                        ),
                       }[typeof val]
                     }
                   </div>
-                )
+                );
               })}
               <i
                 className='fa fa-times'
@@ -215,9 +215,9 @@ export default function ValueSelector({
                     value: {
                       enum: [
                         ...enumArr.slice(0, index),
-                        ...enumArr.slice(index + 1)
-                      ]
-                    }
+                        ...enumArr.slice(index + 1),
+                      ],
+                    },
                   })
                 }
               />
@@ -226,35 +226,35 @@ export default function ValueSelector({
           <i
             className='fa fa-plus'
             onClick={() => {
-              const newCase = {}
+              const newCase = {};
               const propArr = parentSchema
-                ? (parse(parentSchema, 'yaml'): any).properties
-                : {}
+                ? (parse(parentSchema, 'json'): any).properties
+                : {};
               Object.keys(propArr).forEach((key) => {
                 if (
                   propArr[key].type === 'number' ||
                   propArr[key].type === 'integer'
                 ) {
-                  newCase[key] = 0
+                  newCase[key] = 0;
                 } else if (propArr[key].type === 'array' || propArr[key].enum) {
-                  newCase[key] = []
+                  newCase[key] = [];
                 } else if (
                   propArr[key].type === 'object' ||
                   propArr[key].properties
                 ) {
-                  newCase[key] = {}
+                  newCase[key] = {};
                 } else {
-                  newCase[key] = ''
+                  newCase[key] = '';
                 }
-              })
+              });
               onChange({
                 ...possibility,
-                value: { enum: [...enumArr, newCase] }
-              })
+                value: { enum: [...enumArr, newCase] },
+              });
             }}
           />
         </div>
-      )
+      );
     }
     return (
       <CardEnumOptions
@@ -265,8 +265,8 @@ export default function ValueSelector({
         type={parentType || 'string'}
         showNames={false}
       />
-    )
+    );
   } else {
-    return <h5> Appear if defined </h5>
+    return <h5> Appear if defined </h5>;
   }
 }

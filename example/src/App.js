@@ -1,11 +1,11 @@
-import React from "react";
-import PlaygroundContainer from "./PlaygroundContainer";
+import React from 'react';
+import PlaygroundContainer from './PlaygroundContainer';
 
 function App() {
   return (
-    <div className="App">
+    <div className='App'>
       <body>
-        <PlaygroundContainer title="React JSON Schema Form Builder" />
+        <PlaygroundContainer title='React JSON Schema Form Builder' />
       </body>
     </div>
   );

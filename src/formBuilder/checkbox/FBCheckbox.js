@@ -1,19 +1,19 @@
 // @flow
 
-import React from 'react'
-import classnames from 'classnames'
-import { createUseStyles } from 'react-jss'
+import React from 'react';
+import classnames from 'classnames';
+import { createUseStyles } from 'react-jss';
 
 const useStyles = createUseStyles({
   checkbox: {
     '& *': {
-      display: 'inline-block'
+      display: 'inline-block',
     },
     '& input': {
-      marginRight: '5px'
-    }
-  }
-})
+      marginRight: '5px',
+    },
+  },
+});
 
 type Props = {
   onChangeValue: Function,
@@ -24,8 +24,8 @@ type Props = {
   value?: string,
   disabled?: boolean,
   dataTest?: string,
-  labelClassName?: string
-}
+  labelClassName?: string,
+};
 
 const FBCheckbox = ({
   onChangeValue,
@@ -36,17 +36,17 @@ const FBCheckbox = ({
   disabled = false,
   id = '',
   dataTest = '',
-  labelClassName = ''
+  labelClassName = '',
 }: Props) => {
-  const classjss = useStyles()
+  const classjss = useStyles();
   const classes = classnames('fb-checkbox', {
     'edit-checkbox': !disabled && use === 'edit',
     'action-checkbox': !disabled && use === 'action',
     'disabled-checked-checkbox': disabled && isChecked,
-    'disabled-unchecked-checkbox': disabled && !isChecked
-  })
-  const potentialCheckboxId = id !== '' ? id : label
-  const checkboxId = potentialCheckboxId !== '' ? potentialCheckboxId : null
+    'disabled-unchecked-checkbox': disabled && !isChecked,
+  });
+  const potentialCheckboxId = id !== '' ? id : label;
+  const checkboxId = potentialCheckboxId !== '' ? potentialCheckboxId : null;
   return (
     <div data-test='checkbox' className={`${classes} ${classjss.checkbox}`}>
       <input
@@ -66,7 +66,7 @@ const FBCheckbox = ({
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default FBCheckbox
+export default FBCheckbox;

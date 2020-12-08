@@ -1,11 +1,11 @@
 // @flow
 
-import React from 'react'
-import Select from 'react-select'
-import { Input } from 'reactstrap'
-import FBCheckbox from '../checkbox/FBCheckbox'
-import Tooltip from '../Tooltip'
-import type { Parameters } from '../types'
+import React from 'react';
+import Select from 'react-select';
+import { Input } from 'reactstrap';
+import FBCheckbox from '../checkbox/FBCheckbox';
+import Tooltip from '../Tooltip';
+import type { Parameters } from '../types';
 
 const formatDictionary = {
   '': 'None',
@@ -14,16 +14,16 @@ const formatDictionary = {
   hostname: 'Hostname',
   time: 'Time',
   uri: 'URI',
-  regex: 'Regular Expression'
-}
+  regex: 'Regular Expression',
+};
 
 // specify the inputs required for a string type object
 function CardLongAnswerParameterInputs({
   parameters,
-  onChange
+  onChange,
 }: {
   parameters: Parameters,
-  onChange: (newParams: Parameters) => void
+  onChange: (newParams: Parameters) => void,
 }) {
   return (
     <div>
@@ -36,8 +36,8 @@ function CardLongAnswerParameterInputs({
         onChange={(ev: SyntheticInputEvent<HTMLInputElement>) => {
           onChange({
             ...parameters,
-            minLength: parseInt(ev.target.value, 10)
-          })
+            minLength: parseInt(ev.target.value, 10),
+          });
         }}
         className='card-modal-number'
       />
@@ -50,8 +50,8 @@ function CardLongAnswerParameterInputs({
         onChange={(ev: SyntheticInputEvent<HTMLInputElement>) => {
           onChange({
             ...parameters,
-            maxLength: parseInt(ev.target.value, 10)
-          })
+            maxLength: parseInt(ev.target.value, 10),
+          });
         }}
         className='card-modal-number'
       />
@@ -73,8 +73,8 @@ function CardLongAnswerParameterInputs({
         onChange={(ev: SyntheticInputEvent<HTMLInputElement>) => {
           onChange({
             ...parameters,
-            pattern: ev.target.value
-          })
+            pattern: ev.target.value,
+          });
         }}
         className='card-modal-text'
       />
@@ -97,19 +97,19 @@ function CardLongAnswerParameterInputs({
             ? formatDictionary[
                 typeof parameters.format === 'string' ? parameters.format : ''
               ]
-            : 'None'
+            : 'None',
         }}
         placeholder='Format'
         key='format'
         options={Object.keys(formatDictionary).map((key) => ({
           value: key,
-          label: formatDictionary[key]
+          label: formatDictionary[key],
         }))}
         onChange={(val: any) => {
           onChange({
             ...parameters,
-            format: val.value
-          })
+            format: val.value,
+          });
         }}
         className='card-modal-select'
       />
@@ -120,8 +120,8 @@ function CardLongAnswerParameterInputs({
               ...parameters,
               'ui:autofocus': parameters['ui:autofocus']
                 ? parameters['ui:autofocus'] !== true
-                : true
-            })
+                : true,
+            });
           }}
           isChecked={
             parameters['ui:autofocus']
@@ -132,15 +132,15 @@ function CardLongAnswerParameterInputs({
         />
       </div>
     </div>
-  )
+  );
 }
 
 function LongAnswer({
   parameters,
-  onChange
+  onChange,
 }: {
   parameters: Parameters,
-  onChange: (newParams: Parameters) => void
+  onChange: (newParams: Parameters) => void,
 }) {
   return (
     <React.Fragment>
@@ -155,7 +155,7 @@ function LongAnswer({
         className='card-textarea'
       />
     </React.Fragment>
-  )
+  );
 }
 
 const longAnswerInput = {
@@ -164,17 +164,17 @@ const longAnswerInput = {
     matchIf: [
       {
         types: ['string'],
-        widget: 'textarea'
-      }
+        widget: 'textarea',
+      },
     ],
     defaultDataSchema: {},
     defaultUiSchema: {
-      'ui:widget': 'textarea'
+      'ui:widget': 'textarea',
     },
     type: 'string',
     cardBody: LongAnswer,
-    modalBody: CardLongAnswerParameterInputs
-  }
-}
+    modalBody: CardLongAnswerParameterInputs,
+  },
+};
 
-export default longAnswerInput
+export default longAnswerInput;

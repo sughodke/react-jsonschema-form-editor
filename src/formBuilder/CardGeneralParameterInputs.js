@@ -1,36 +1,36 @@
 // @flow
 
-import React from 'react'
-import Select from 'react-select'
-import { Input } from 'reactstrap'
-import GeneralParameterInputs from './GeneralParameterInputs'
+import React from 'react';
+import Select from 'react-select';
+import { Input } from 'reactstrap';
+import GeneralParameterInputs from './GeneralParameterInputs';
 import {
   defaultUiProps,
   defaultDataProps,
   categoryToNameMap,
-  categoryType
-} from './utils'
-import type { Parameters, Mods, FormInput } from './types'
-import Tooltip from './Tooltip'
+  categoryType,
+} from './utils';
+import type { Parameters, Mods, FormInput } from './types';
+import Tooltip from './Tooltip';
 
 // specify the inputs required for any type of object
 export default function CardGeneralParameterInputs({
   parameters,
   onChange,
   allFormInputs,
-  mods
+  mods,
 }: {
   parameters: Parameters,
   onChange: (newParams: Parameters) => void,
   mods?: Mods,
-  allFormInputs: { [string]: FormInput }
+  allFormInputs: { [string]: FormInput },
 }) {
-  const [keyState, setKeyState] = React.useState(parameters.name)
-  const [titleState, setTitleState] = React.useState(parameters.title)
+  const [keyState, setKeyState] = React.useState(parameters.name);
+  const [titleState, setTitleState] = React.useState(parameters.title);
   const [descriptionState, setDescriptionState] = React.useState(
-    parameters.description
-  )
-  const categoryMap = categoryToNameMap(parameters.category, allFormInputs)
+    parameters.description,
+  );
+  const categoryMap = categoryToNameMap(parameters.category, allFormInputs);
 
   return (
     <div>
@@ -60,7 +60,7 @@ export default function CardGeneralParameterInputs({
           onBlur={(ev: SyntheticInputEvent<HTMLInputElement>) =>
             onChange({
               ...parameters,
-              name: ev.target.value
+              name: ev.target.value,
             })
           }
           className='card-text'
@@ -93,7 +93,7 @@ export default function CardGeneralParameterInputs({
             setTitleState(ev.target.value)
           }
           onBlur={(ev: SyntheticInputEvent<HTMLInputElement>) => {
-            onChange({ ...parameters, title: ev.target.value })
+            onChange({ ...parameters, title: ev.target.value });
           }}
           className='card-text'
           readOnly={parameters.$ref !== undefined}
@@ -122,7 +122,7 @@ export default function CardGeneralParameterInputs({
             setDescriptionState(ev.target.value)
           }
           onBlur={(ev: SyntheticInputEvent<HTMLInputElement>) => {
-            onChange({ ...parameters, description: ev.target.value })
+            onChange({ ...parameters, description: ev.target.value });
           }}
           className='card-text'
           readOnly={parameters.$ref !== undefined}
@@ -146,7 +146,7 @@ export default function CardGeneralParameterInputs({
         <Select
           value={{
             value: parameters.category,
-            label: categoryMap[parameters.category]
+            label: categoryMap[parameters.category],
           }}
           placeholder='Category'
           options={Object.keys(categoryMap)
@@ -154,34 +154,34 @@ export default function CardGeneralParameterInputs({
               (key) =>
                 key !== 'ref' ||
                 (parameters.definitionData &&
-                  Object.keys(parameters.definitionData).length !== 0)
+                  Object.keys(parameters.definitionData).length !== 0),
             )
             .map((key) => ({
               value: key,
-              label: categoryMap[key]
+              label: categoryMap[key],
             }))}
           onChange={(val: any) => {
             // figure out the new 'type'
-            const newCategory = val.value
+            const newCategory = val.value;
 
             const newProps = {
               ...defaultUiProps(newCategory, allFormInputs),
               ...defaultDataProps(newCategory, allFormInputs),
               name: parameters.name,
-              required: parameters.required
-            }
+              required: parameters.required,
+            };
             if (newProps.$ref !== undefined && !newProps.$ref) {
               // assign an initial reference
-              const firstDefinition = Object.keys(parameters.definitionData)[0]
-              newProps.$ref = `#/definitions/${firstDefinition || 'empty'}`
+              const firstDefinition = Object.keys(parameters.definitionData)[0];
+              newProps.$ref = `#/definitions/${firstDefinition || 'empty'}`;
             }
             onChange({
               ...newProps,
               title: newProps.title || parameters.title,
               default: newProps.default || '',
               type: newProps.type || categoryType(newCategory, allFormInputs),
-              category: newProps.category || newCategory
-            })
+              category: newProps.category || newCategory,
+            });
           }}
           className='card-select'
         />
@@ -196,5 +196,5 @@ export default function CardGeneralParameterInputs({
         />
       </div>
     </div>
-  )
+  );
 }

@@ -1,12 +1,12 @@
 // @flow
 
-import * as React from 'react'
-import { UncontrolledTooltip } from 'reactstrap'
-import { createUseStyles } from 'react-jss'
-import FBRadioGroup from '../radio/FBRadioGroup'
-import Tooltip from '../Tooltip'
-import DependencyWarning from './DependencyWarning'
-import DependencyPossibility from './DependencyPossibility'
+import * as React from 'react';
+import { UncontrolledTooltip } from 'reactstrap';
+import { createUseStyles } from 'react-jss';
+import FBRadioGroup from '../radio/FBRadioGroup';
+import Tooltip from '../Tooltip';
+import DependencyWarning from './DependencyWarning';
+import DependencyPossibility from './DependencyPossibility';
 
 const useStyles = createUseStyles({
   dependencyField: {
@@ -28,37 +28,37 @@ const useStyles = createUseStyles({
           '& input': {
             width: '80%',
             marginRight: '1em',
-            marginBottom: '0.5em'
-          }
-        }
-      }
+            marginBottom: '0.5em',
+          },
+        },
+      },
     },
     '& p': { fontSize: '0.75em' },
     '& .fb-radio-button': {
-      display: 'block'
-    }
-  }
-})
+      display: 'block',
+    },
+  },
+});
 
 // checks whether an array corresponds to oneOf dependencies
 function checkIfValueBasedDependency(
   dependents: Array<{
     children: Array<string>,
-    value?: any
-  }>
+    value?: any,
+  }>,
 ) {
-  let valueBased = true
+  let valueBased = true;
   if (dependents && Array.isArray(dependents) && dependents.length > 0) {
     dependents.forEach((possibility) => {
       if (!possibility.value || !possibility.value.enum) {
-        valueBased = false
+        valueBased = false;
       }
-    })
+    });
   } else {
-    valueBased = false
+    valueBased = false;
   }
 
-  return valueBased
+  return valueBased;
 }
 
 type DependencyParams = {
@@ -66,23 +66,23 @@ type DependencyParams = {
   name?: string,
   dependents?: Array<{
     children: Array<string>,
-    value?: any
+    value?: any,
   }>,
   type?: string,
   enum?: Array<string | number>,
   neighborNames?: Array<string>,
-  schema?: string
-}
+  schema?: string,
+};
 
 export default function DependencyField({
   parameters,
-  onChange
+  onChange,
 }: {
   parameters: DependencyParams,
-  onChange: (newParams: DependencyParams) => void
+  onChange: (newParams: DependencyParams) => void,
 }) {
-  const classes = useStyles()
-  const valueBased = checkIfValueBasedDependency(parameters.dependents || [])
+  const classes = useStyles();
+  const valueBased = checkIfValueBasedDependency(parameters.dependents || []);
   return (
     <div className={`form-dependency ${classes.dependencyField}`}>
       <h3>
@@ -101,35 +101,35 @@ export default function DependencyField({
             options={[
               {
                 value: 'definition',
-                label: 'Any value dependency'
+                label: 'Any value dependency',
               },
               {
                 value: 'value',
-                label: 'Specific value dependency'
-              }
+                label: 'Specific value dependency',
+              },
             ]}
             onChange={(selection) => {
               if (parameters.dependents) {
-                const newDependents = [...parameters.dependents]
+                const newDependents = [...parameters.dependents];
                 if (selection === 'definition') {
                   parameters.dependents.forEach((possibility, index) => {
                     newDependents[index] = {
                       ...possibility,
-                      value: undefined
-                    }
-                  })
+                      value: undefined,
+                    };
+                  });
                 } else {
                   parameters.dependents.forEach((possibility, index) => {
                     newDependents[index] = {
                       ...possibility,
-                      value: { enum: [] }
-                    }
-                  })
+                      value: { enum: [] },
+                    };
+                  });
                 }
                 onChange({
                   ...parameters,
-                  dependents: newDependents
-                })
+                  dependents: newDependents,
+                });
               }
             }}
           />
@@ -155,28 +155,28 @@ export default function DependencyField({
                 key={`${parameters.path}_possibility${index}`}
                 onChange={(newPossibility: {
                   children: Array<string>,
-                  value?: any
+                  value?: any,
                 }) => {
                   const newDependents = parameters.dependents
                     ? [...parameters.dependents]
-                    : []
-                  newDependents[index] = newPossibility
+                    : [];
+                  newDependents[index] = newPossibility;
                   onChange({
                     ...parameters,
-                    dependents: newDependents
-                  })
+                    dependents: newDependents,
+                  });
                 }}
                 onDelete={() => {
                   const newDependents = parameters.dependents
                     ? [...parameters.dependents]
-                    : []
+                    : [];
                   onChange({
                     ...parameters,
                     dependents: [
                       ...newDependents.slice(0, index),
-                      ...newDependents.slice(index + 1)
-                    ]
-                  })
+                      ...newDependents.slice(index + 1),
+                    ],
+                  });
                 }}
               />
             ))
@@ -188,15 +188,15 @@ export default function DependencyField({
           onClick={() => {
             const newDependents = parameters.dependents
               ? [...parameters.dependents]
-              : []
+              : [];
             newDependents.push({
               children: [],
-              value: valueBased ? { enum: [] } : undefined
-            })
+              value: valueBased ? { enum: [] } : undefined,
+            });
             onChange({
               ...parameters,
-              dependents: newDependents
-            })
+              dependents: newDependents,
+            });
           }}
         />
         <UncontrolledTooltip
@@ -208,5 +208,5 @@ export default function DependencyField({
         </UncontrolledTooltip>
       </div>
     </div>
-  )
+  );
 }

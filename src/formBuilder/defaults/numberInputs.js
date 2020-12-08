@@ -1,18 +1,18 @@
 // @flow
 
-import React from 'react'
-import { Input } from 'reactstrap'
-import FBCheckbox from '../checkbox/FBCheckbox'
-import Tooltip from '../Tooltip'
-import type { Parameters } from '../types'
+import React from 'react';
+import { Input } from 'reactstrap';
+import FBCheckbox from '../checkbox/FBCheckbox';
+import Tooltip from '../Tooltip';
+import type { Parameters } from '../types';
 
 // specify the inputs required for a number type object
 function CardNumberParameterInputs({
   parameters,
-  onChange
+  onChange,
 }: {
   parameters: Parameters,
-  onChange: (newParams: Parameters) => void
+  onChange: (newParams: Parameters) => void,
 }) {
   return (
     <div>
@@ -30,12 +30,12 @@ function CardNumberParameterInputs({
         key='multipleOf'
         type='number'
         onChange={(ev: SyntheticInputEvent<HTMLInputElement>) => {
-          let newVal = parseFloat(ev.target.value)
-          if (Number.isNaN(newVal)) newVal = null
+          let newVal = parseFloat(ev.target.value);
+          if (Number.isNaN(newVal)) newVal = null;
           onChange({
             ...parameters,
-            multipleOf: newVal
-          })
+            multipleOf: newVal,
+          });
         }}
         className='card-modal-number'
       />
@@ -46,21 +46,21 @@ function CardNumberParameterInputs({
         key='minimum'
         type='number'
         onChange={(ev: SyntheticInputEvent<HTMLInputElement>) => {
-          let newVal = parseFloat(ev.target.value)
-          if (Number.isNaN(newVal)) newVal = null
+          let newVal = parseFloat(ev.target.value);
+          if (Number.isNaN(newVal)) newVal = null;
           // change either min or exclusiveMin depending on which one is active
           if (parameters.exclusiveMinimum) {
             onChange({
               ...parameters,
               exclusiveMinimum: newVal,
-              minimum: null
-            })
+              minimum: null,
+            });
           } else {
             onChange({
               ...parameters,
               minimum: newVal,
-              exclusiveMinimum: null
-            })
+              exclusiveMinimum: null,
+            });
           }
         }}
         className='card-modal-number'
@@ -69,19 +69,19 @@ function CardNumberParameterInputs({
         <FBCheckbox
           key='exclusiveMinimum'
           onChangeValue={() => {
-            const newMin = parameters.minimum || parameters.exclusiveMinimum
+            const newMin = parameters.minimum || parameters.exclusiveMinimum;
             if (parameters.exclusiveMinimum) {
               onChange({
                 ...parameters,
                 exclusiveMinimum: null,
-                minimum: newMin
-              })
+                minimum: newMin,
+              });
             } else {
               onChange({
                 ...parameters,
                 exclusiveMinimum: newMin,
-                minimum: null
-              })
+                minimum: null,
+              });
             }
           }}
           isChecked={!!parameters.exclusiveMinimum}
@@ -96,21 +96,21 @@ function CardNumberParameterInputs({
         key='maximum'
         type='number'
         onChange={(ev: SyntheticInputEvent<HTMLInputElement>) => {
-          let newVal = parseFloat(ev.target.value)
-          if (Number.isNaN(newVal)) newVal = null
+          let newVal = parseFloat(ev.target.value);
+          if (Number.isNaN(newVal)) newVal = null;
           // change either max or exclusiveMax depending on which one is active
           if (parameters.exclusiveMinimum) {
             onChange({
               ...parameters,
               exclusiveMaximum: newVal,
-              maximum: null
-            })
+              maximum: null,
+            });
           } else {
             onChange({
               ...parameters,
               maximum: newVal,
-              exclusiveMaximum: null
-            })
+              exclusiveMaximum: null,
+            });
           }
         }}
         className='card-modal-number'
@@ -119,19 +119,19 @@ function CardNumberParameterInputs({
         <FBCheckbox
           key='exclusiveMaximum'
           onChangeValue={() => {
-            const newMax = parameters.maximum || parameters.exclusiveMaximum
+            const newMax = parameters.maximum || parameters.exclusiveMaximum;
             if (parameters.exclusiveMaximum) {
               onChange({
                 ...parameters,
                 exclusiveMaximum: null,
-                maximum: newMax
-              })
+                maximum: newMax,
+              });
             } else {
               onChange({
                 ...parameters,
                 exclusiveMaximum: newMax,
-                maximum: null
-              })
+                maximum: null,
+              });
             }
           }}
           isChecked={!!parameters.exclusiveMaximum}
@@ -140,15 +140,15 @@ function CardNumberParameterInputs({
         />
       </div>
     </div>
-  )
+  );
 }
 
 function NumberField({
   parameters,
-  onChange
+  onChange,
 }: {
   parameters: Parameters,
-  onChange: (newParams: Parameters) => void
+  onChange: (newParams: Parameters) => void,
 }) {
   return (
     <React.Fragment>
@@ -160,13 +160,13 @@ function NumberField({
         onChange={(ev: SyntheticInputEvent<HTMLInputElement>) =>
           onChange({
             ...parameters,
-            default: parseFloat(ev.target.value)
+            default: parseFloat(ev.target.value),
           })
         }
         className='card-number'
       />
     </React.Fragment>
-  )
+  );
 }
 
 const numberInputs = {
@@ -174,32 +174,32 @@ const numberInputs = {
     displayName: 'Integer',
     matchIf: [
       {
-        types: ['integer']
+        types: ['integer'],
       },
       {
         types: ['integer'],
-        widget: 'number'
-      }
+        widget: 'number',
+      },
     ],
     defaultDataSchema: {},
     defaultUiSchema: {},
     type: 'integer',
     cardBody: NumberField,
-    modalBody: CardNumberParameterInputs
+    modalBody: CardNumberParameterInputs,
   },
   number: {
     displayName: 'Number',
     matchIf: [
       {
-        types: ['number']
-      }
+        types: ['number'],
+      },
     ],
     defaultDataSchema: {},
     defaultUiSchema: {},
     type: 'number',
     cardBody: NumberField,
-    modalBody: CardNumberParameterInputs
-  }
-}
+    modalBody: CardNumberParameterInputs,
+  },
+};
 
-export default numberInputs
+export default numberInputs;

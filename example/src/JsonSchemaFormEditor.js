@@ -1,6 +1,6 @@
 // @flow
 
-import React from "react";
+import React from 'react';
 import {
   Alert,
   Modal,
@@ -8,15 +8,13 @@ import {
   Button,
   ModalBody,
   ModalFooter,
-} from "reactstrap";
-import { safeLoad as yamlParse, safeDump as yamlStringify } from "js-yaml";
-//import Form from "react-jsonschema-form";
-import Form from "@rjsf/core";
-//import Form from "@rjsf/bootstrap-4";
-import {FormBuilder, PreDefinedGallery} from 'react-jsonschema-form-editor';
-import Tabs from "./tabs/Tabs";
-import YamlEditor from "./yamlEditor/YamlEditor";
-import ErrorBoundary from "./ErrorBoundary";
+} from 'reactstrap';
+import Form from '@rjsf/core';
+import { FormBuilder, PreDefinedGallery } from 'react-jsonschema-form-editor';
+import Tabs from './tabs/Tabs';
+import { JsonEditor as Editor } from 'jsoneditor-react';
+import 'jsoneditor-react/es/editor.min.css';
+import ErrorBoundary from './ErrorBoundary';
 
 type Props = {
   lang: string,
@@ -38,53 +36,19 @@ type State = {
   submissionData: any,
 };
 
-// parse in either YAML or JSON
-function parseForJsonSchemaForm(text: string, language: string) {
-  if (!text || text === "null") return {};
-  return language === "yaml" ? yamlParse(text) : JSON.parse(text);
-}
-
-// stringify in either YAML or JSON
-function stringify(obj: any, language: string) {
-  if (!obj) return "";
-  return language === "yaml"
-    ? yamlStringify(obj, { skipInvalid: true })
-    : JSON.stringify(obj, null, 5);
-}
-
 // return error message for parsing or blank if no error
 function checkError(text: string, language: string) {
   let data;
   try {
-    data = parseForJsonSchemaForm(text, language);
+    data = JSON.parse(text);
   } catch (e) {
     return e.toString();
   }
-  if (typeof data === "string") {
-    return "Received a string instead of object.";
+  if (typeof data === 'string') {
+    return 'Received a string instead of object.';
   }
-  return "";
+  return '';
 }
-
-// generalized editor, either json or yaml
-const LangEditor = (parameters: {
-  name: string,
-  onChange: (string) => any,
-  lang: string,
-  value: string,
-  readOnly?: boolean,
-}) => {
-  return (
-    <YamlEditor
-      name={parameters.name}
-      width={"400px"}
-      height={"400px"}
-      onChange={parameters.onChange}
-      yaml={parameters.value}
-      readOnly={parameters.readOnly}
-    />
-  );
-};
 
 class JsonSchemaFormEditor extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -95,7 +59,7 @@ class JsonSchemaFormEditor extends React.Component<Props, State> {
       formData: {},
       formToggle: true,
       outputToggle: false,
-      schemaFormErrorFlag: "",
+      schemaFormErrorFlag: '',
       validFormInput: false,
       editorWidth: 700,
       submissionData: {},
@@ -117,10 +81,10 @@ class JsonSchemaFormEditor extends React.Component<Props, State> {
   // update the internal form data state
   updateFormData(text: string) {
     try {
-      const data = parseForJsonSchemaForm(text, this.props.lang);
+      const data = JSON.parse(text);
       this.setState({
         formData: data,
-        schemaFormErrorFlag: "",
+        schemaFormErrorFlag: '',
       });
     } catch (err) {
       this.setState({
@@ -135,45 +99,45 @@ class JsonSchemaFormEditor extends React.Component<Props, State> {
     return (
       <div
         style={{
-          width: this.props.width ? this.props.width : "100%",
-          height: this.props.height ? this.props.height : "500px",
+          width: this.props.width ? this.props.width : '100%',
+          height: this.props.height ? this.props.height : '500px',
         }}
-        className="playground-main"
+        className='playground-main'
       >
         <Alert
           style={{
-            display: schemaError === "" ? "none" : "block",
+            display: schemaError === '' ? 'none' : 'block',
           }}
-          color="danger"
+          color='danger'
         >
           <h5>Schema:</h5> {schemaError}
         </Alert>
         <Alert
           style={{
-            display: schemaUiError === "" ? "none" : "block",
+            display: schemaUiError === '' ? 'none' : 'block',
           }}
-          color="danger"
+          color='danger'
         >
           <h5>UI Schema:</h5> {schemaUiError}
         </Alert>
         <Alert
           style={{
-            display: this.state.schemaFormErrorFlag === "" ? "none" : "block",
+            display: this.state.schemaFormErrorFlag === '' ? 'none' : 'block',
           }}
-          color="danger"
+          color='danger'
         >
           <h5>Form:</h5> {this.state.schemaFormErrorFlag}
         </Alert>
         <Tabs
           tabs={[
             {
-              name: "Visual Form Builder",
-              id: "form-builder",
+              name: 'Visual Form Builder',
+              id: 'form-builder',
               content: (
                 <div
-                  className="tab-pane"
+                  className='tab-pane'
                   style={{
-                    height: this.props.height ? this.props.height : "500px",
+                    height: this.props.height ? this.props.height : '500px',
                   }}
                 >
                   <ErrorBoundary onErr={() => {}}>
@@ -191,13 +155,13 @@ class JsonSchemaFormEditor extends React.Component<Props, State> {
               ),
             },
             {
-              name: "Preview Form",
-              id: "preview-form",
+              name: 'Preview Form',
+              id: 'preview-form',
               content: (
                 <div
-                  className="tab-pane"
+                  className='tab-pane'
                   style={{
-                    height: this.props.height ? this.props.height : "500px",
+                    height: this.props.height ? this.props.height : '500px',
                   }}
                 >
                   <ErrorBoundary
@@ -206,30 +170,22 @@ class JsonSchemaFormEditor extends React.Component<Props, State> {
                         schemaFormErrorFlag: err,
                       });
                     }}
-                    errMessage="Error parsing JSON Schema"
+                    errMessage='Error parsing JSON Schema'
                   >
                     <Form
                       schema={
-                        schemaError === ""
-                          ? parseForJsonSchemaForm(
-                              this.props.schema,
-                              this.props.lang
-                            )
-                          : {}
+                        schemaError === '' ? JSON.parse(this.props.schema) : {}
                       }
                       uiSchema={
-                        schemaUiError === ""
-                          ? parseForJsonSchemaForm(
-                              this.props.uischema,
-                              this.props.lang
-                            )
+                        schemaUiError === ''
+                          ? JSON.parse(this.props.uischema)
                           : {}
                       }
                       onChange={(formData) =>
                         this.updateFormData(JSON.stringify(formData.formData))
                       }
                       formData={this.state.formData}
-                      submitButtonMessage={"Submit"}
+                      submitButtonMessage={'Submit'}
                       onSubmit={(submissionData) => {
                         // below only runs if validation succeeded
                         this.setState({
@@ -243,18 +199,16 @@ class JsonSchemaFormEditor extends React.Component<Props, State> {
                   <Modal isOpen={this.state.outputToggle}>
                     <ModalHeader>Form output preview</ModalHeader>
                     <ModalBody>
-                      <div className="editor-container">
+                      <div className='editor-container'>
                         <ErrorBoundary
                           onErr={() => {}}
-                          errMessage={"Error parsing JSON Schema Form output"}
+                          errMessage={'Error parsing JSON Schema Form output'}
                         >
-                          {LangEditor({
-                            name: "Output Data",
-                            onChange: () => {},
-                            lang: this.props.lang,
-                            value: stringify(this.state.submissionData, "json"),
-                            readOnly: true,
-                          })}
+                          <h4>Output Data</h4>
+                          <Editor
+                            value={JSON.stringify(this.state.submissionData)}
+                            onChange={() => {}}
+                          />
                         </ErrorBoundary>
                         <br />
                       </div>
@@ -266,7 +220,7 @@ class JsonSchemaFormEditor extends React.Component<Props, State> {
                             outputToggle: false,
                           });
                         }}
-                        color="secondary"
+                        color='secondary'
                       >
                         Close
                       </Button>
@@ -276,65 +230,63 @@ class JsonSchemaFormEditor extends React.Component<Props, State> {
               ),
             },
             {
-              name: "Edit Schema",
-              id: "editors",
+              name: 'Edit Schema',
+              id: 'editors',
               content: (
                 <div
-                  className="tab-pane"
+                  className='tab-pane'
                   style={{
-                    height: this.props.height ? this.props.height : "500px",
-                    display: "flex",
-                    "flex-direction": "row",
+                    height: this.props.height ? this.props.height : '500px',
+                    display: 'flex',
+                    'flex-direction': 'row',
                   }}
                 >
-                  <div style={{ margin: "1em" }} className="editor-container">
+                  <div style={{ margin: '1em' }} className='editor-container'>
                     <ErrorBoundary
                       onErr={(err: string) => {
                         // if rendering initial value causes a crash
                         // eslint-disable-next-line no-console
                         console.error(err);
-                        this.updateSchema("{}");
+                        this.updateSchema('{}');
                       }}
-                      errMessage={"Error parsing JSON Schema input"}
+                      errMessage={'Error parsing JSON Schema input'}
                     >
-                      {LangEditor({
-                        name: "Data Schema",
-                        onChange: (data: any) => this.updateSchema(data),
-                        lang: this.props.lang,
-                        value: this.props.schema,
-                      })}
+                      <h4>Data Schema</h4>
+                      <Editor
+                        value={this.props.schema}
+                        onChange={(data: any) => this.updateSchema(data)}
+                      />
                     </ErrorBoundary>
                     <br />
                   </div>
-                  <div style={{ margin: "1em" }} className="editor-container">
+                  <div style={{ margin: '1em' }} className='editor-container'>
                     <ErrorBoundary
                       onErr={(err: string) => {
                         // if rendering initial value causes a crash
                         // eslint-disable-next-line no-console
                         console.error(err);
-                        this.updateUISchema("{}");
+                        this.updateUISchema('{}');
                       }}
-                      errMessage={"Error parsing JSON UI Schema input"}
+                      errMessage={'Error parsing JSON UI Schema input'}
                     >
-                      {LangEditor({
-                        name: "UI Schema",
-                        onChange: (data: any) => this.updateUISchema(data),
-                        lang: this.props.lang,
-                        value: this.props.uischema,
-                      })}
+                      <h4>UI Schema</h4>
+                      <Editor
+                        value={this.props.uischema}
+                        onChange={(data: any) => this.updateUISchema(data)}
+                      />
                     </ErrorBoundary>
                   </div>
                 </div>
               ),
             },
             {
-              name: "Pre-Configured Components",
-              id: "pre-configured",
+              name: 'Pre-Configured Components',
+              id: 'pre-configured',
               content: (
                 <div
-                  className="tab-pane"
+                  className='tab-pane'
                   style={{
-                    height: this.props.height ? this.props.height : "500px",
+                    height: this.props.height ? this.props.height : '500px',
                   }}
                 >
                   <ErrorBoundary onErr={() => {}}>

@@ -1,11 +1,11 @@
 // @flow
-import * as React from 'react'
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
-import { Alert, Input } from 'reactstrap'
-import { createUseStyles } from 'react-jss'
-import Card from './Card'
-import Section from './Section'
-import Add from './Add'
+import * as React from 'react';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { Alert, Input } from 'reactstrap';
+import { createUseStyles } from 'react-jss';
+import Card from './Card';
+import Section from './Section';
+import Add from './Add';
 import {
   parse,
   stringify,
@@ -15,32 +15,32 @@ import {
   addSectionObj,
   onDragEnd,
   countElementsFromSchema,
-  generateCategoryHash
-} from './utils'
-import DEFAULT_FORM_INPUTS from './defaults/defaultFormInputs'
-import type { Mods } from './types'
+  generateCategoryHash,
+} from './utils';
+import DEFAULT_FORM_INPUTS from './defaults/defaultFormInputs';
+import type { Mods } from './types';
 
 const useStyles = createUseStyles({
   formBuilder: {
     'text-align': 'center',
     '& i': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '& .fa-question-circle': {
-      color: 'gray'
+      color: 'gray',
     },
     '& .fa-asterisk': {
       'font-size': '.9em',
-      color: 'green'
+      color: 'green',
     },
     '& .fa-plus-square': {
       color: 'green',
       'font-size': '1.5em',
-      margin: '0 auto'
+      margin: '0 auto',
     },
     '& .card-container': {
       '&:hover': {
-        border: '1px solid green'
+        border: '1px solid green',
       },
       display: 'block',
       width: '70%',
@@ -50,7 +50,7 @@ const useStyles = createUseStyles({
       'border-radius': '4px',
       'background-color': 'white',
       '& .toggle-collapse': {
-        margin: '0.25em .5em 0 .5em !important'
+        margin: '0.25em .5em 0 .5em !important',
       },
       '& h4': {
         width: '100%',
@@ -58,37 +58,37 @@ const useStyles = createUseStyles({
         display: 'inline-block',
         color: '#138AC2',
         margin: '0.25em .5em 0 .5em',
-        'font-size': '18px'
+        'font-size': '18px',
       },
       '& .d-flex': {
-        'border-bottom': '1px solid gray'
+        'border-bottom': '1px solid gray',
       },
       '& .label': {
-        float: 'left'
+        float: 'left',
       },
       '& .arrows': {
         'text-align': 'right',
         float: 'right',
         '& .fa-trash': {
           border: '1px solid #DE5354',
-          color: '#DE5354'
+          color: '#DE5354',
         },
         '& .fa': {
           'border-radius': '4px',
           padding: '.25em',
-          margin: '0 .5em 0 0'
-        }
-      }
+          margin: '0 .5em 0 0',
+        },
+      },
     },
     '& .card-dependent': {
-      border: '1px dashed gray'
+      border: '1px dashed gray',
     },
     '& .card-requirements': {
-      border: '1px dashed black'
+      border: '1px dashed black',
     },
     '& .section-container': {
       '&:hover': {
-        border: '1px solid green'
+        border: '1px solid green',
       },
       display: 'block',
       width: '90%',
@@ -98,7 +98,7 @@ const useStyles = createUseStyles({
       'border-radius': '4px',
       'background-color': 'white',
       '& .toggle-collapse': {
-        margin: '0.25em .5em 0 .5em !important'
+        margin: '0.25em .5em 0 .5em !important',
       },
       '& h4': {
         width: '100%',
@@ -106,33 +106,33 @@ const useStyles = createUseStyles({
         display: 'inline-block',
         color: '#138AC2',
         margin: '0.25em .5em 0 .5em',
-        'font-size': '18px'
+        'font-size': '18px',
       },
       '& .d-flex': {
-        'border-bottom': '1px solid var(--gray)'
+        'border-bottom': '1px solid var(--gray)',
       },
       '& .label': {
-        float: 'left'
+        float: 'left',
       },
       '& .arrows': {
         'text-align': 'right',
         float: 'right',
         '& .fa-trash': {
           border: '1px solid #DE5354',
-          color: '#DE5354'
+          color: '#DE5354',
         },
         '& .fa': {
           'border-radius': '4px',
           padding: '.25em',
-          margin: '0 .5em 0 0'
-        }
-      }
+          margin: '0 .5em 0 0',
+        },
+      },
     },
     '& .section-dependent': {
-      border: '1px dashed gray'
+      border: '1px dashed gray',
     },
     '& .section-requirements': {
-      border: '1px dashed black'
+      border: '1px dashed black',
     },
     '& .alert': {
       textAlign: 'left',
@@ -142,21 +142,21 @@ const useStyles = createUseStyles({
         color: 'black',
         fontSize: '16px',
         fontWeight: 'bold',
-        margin: '0'
+        margin: '0',
       },
-      '& li': { fontSize: '14px' }
+      '& li': { fontSize: '14px' },
     },
     '& .disabled-unchecked-checkbox': {
       color: 'var(--gray)',
-      '& div::before': { backgroundColor: 'var(--light-gray)' }
+      '& div::before': { backgroundColor: 'var(--light-gray)' },
     },
     '& .disabled-input': {
       '& input': { backgroundColor: 'var(--light-gray)' },
       '& input:focus': {
         backgroundColor: 'var(--light-gray)',
-        border: '1px solid var(--gray)'
-      }
-    }
+        border: '1px solid var(--gray)',
+      },
+    },
   },
   formHead: {
     display: 'block',
@@ -170,30 +170,30 @@ const useStyles = createUseStyles({
       width: '30%',
       display: 'inline-block',
       'text-align': 'left',
-      padding: '10px'
+      padding: '10px',
     },
     '& .form-title': {
-      'text-align': 'left'
+      'text-align': 'left',
     },
     '& .form-description': {
-      'text-align': 'left'
+      'text-align': 'left',
     },
     '& h5': {
       'font-size': '14px',
       'line-height': '21px',
-      'font-weight': 'bold'
-    }
+      'font-weight': 'bold',
+    },
   },
   formBody: {
     display: 'flex',
     'flex-direction': 'column',
     '& .fa-pencil, & .fa-arrow-up, & .fa-arrow-down': {
       border: '1px solid #1d71ad',
-      color: '#1d71ad'
+      color: '#1d71ad',
     },
     '& .modal-body': {
       maxHeight: '500px',
-      overflowY: 'scroll'
+      overflowY: 'scroll',
     },
     '& .card-container': {
       width: '70%',
@@ -209,7 +209,7 @@ const useStyles = createUseStyles({
         display: 'inline-block',
         color: '#138ac2',
         margin: '0.25em 0.5em 0 0.5em',
-        fontSize: '18px'
+        fontSize: '18px',
       },
       '& .d-flex': { borderBottom: '1px solid var(--gray)' },
       '& .label': { cssFloat: 'left' },
@@ -220,9 +220,9 @@ const useStyles = createUseStyles({
         '& .fa': {
           borderRadius: '4px',
           padding: '0.25em',
-          margin: '0 0.5em 0 0'
-        }
-      }
+          margin: '0 0.5em 0 0',
+        },
+      },
     },
     '& .card-container:hover': { border: '1px solid var(--green)' },
     '& .card-dependent': { border: '1px dashed var(--gray)' },
@@ -230,7 +230,7 @@ const useStyles = createUseStyles({
       cursor: 'pointer',
       display: 'block',
       color: '$green',
-      fontSize: '1.5em'
+      fontSize: '1.5em',
     },
     '& .section-container': {
       width: '90%',
@@ -245,7 +245,7 @@ const useStyles = createUseStyles({
         display: 'inline-block',
         color: '#138ac2',
         margin: '0.25em 0.5em 0 0.5em',
-        fontSize: '18px'
+        fontSize: '18px',
       },
       '& .d-flex': { borderBottom: '1px solid var(--gray)' },
       '& .label': { cssFloat: 'left' },
@@ -256,20 +256,20 @@ const useStyles = createUseStyles({
         '& .fa': {
           borderRadius: '4px',
           padding: '0.25em',
-          margin: '0 0.5em 0 0'
-        }
-      }
+          margin: '0 0.5em 0 0',
+        },
+      },
     },
     '& .section-container:hover': { border: '1px solid var(--green)' },
     '& .section-dependent': { border: '1px dashed var(--gray)' },
-    '& .section-requirements': { border: '1px dashed black' }
+    '& .section-requirements': { border: '1px dashed black' },
   },
   formFooter: {
     marginTop: '1em',
     textAlign: 'center',
-    '& i': { cursor: 'pointer', color: '$green', fontSize: '1.5em' }
-  }
-})
+    '& i': { cursor: 'pointer', color: '$green', fontSize: '1.5em' },
+  },
+});
 
 export default function FormBuilder({
   schema,
@@ -277,41 +277,41 @@ export default function FormBuilder({
   onChange,
   lang,
   mods,
-  className
+  className,
 }: {
   schema: string,
   uischema: string,
   onChange: (string, string) => any,
   lang: string,
   mods?: Mods,
-  className?: string
+  className?: string,
 }) {
-  const classes = useStyles()
-  const schemaData = (parse(schema, lang): { [string]: any }) || {}
-  schemaData.type = 'object'
-  const uiSchemaData = (parse(uischema, lang): { [string]: any }) || {}
+  const classes = useStyles();
+  const schemaData = (parse(schema, lang): { [string]: any }) || {};
+  schemaData.type = 'object';
+  const uiSchemaData = (parse(uischema, lang): { [string]: any }) || {};
   const allFormInputs = {
     ...DEFAULT_FORM_INPUTS,
-    ...(mods && mods.customFormInputs)
-  }
+    ...(mods && mods.customFormInputs),
+  };
   const unsupportedFeatures = checkForUnsupportedFeatures(
     schemaData,
     uiSchemaData,
-    allFormInputs
-  )
+    allFormInputs,
+  );
 
-  const elementNum = countElementsFromSchema(schemaData)
-  const defaultCollapseStates = [...Array(elementNum)].map(() => false)
+  const elementNum = countElementsFromSchema(schemaData);
+  const defaultCollapseStates = [...Array(elementNum)].map(() => false);
   const [cardOpenArray, setCardOpenArray] = React.useState(
-    defaultCollapseStates
-  )
-  const categoryHash = generateCategoryHash(allFormInputs)
+    defaultCollapseStates,
+  );
+  const categoryHash = generateCategoryHash(allFormInputs);
 
   return (
     <div className={`${classes.formBuilder} ${className || ''}`}>
       <Alert
         style={{
-          display: unsupportedFeatures.length === 0 ? 'none' : 'block'
+          display: unsupportedFeatures.length === 0 ? 'none' : 'block',
         }}
         color='warning'
       >
@@ -332,12 +332,12 @@ export default function FormBuilder({
                 stringify(
                   {
                     ...schemaData,
-                    title: ev.target.value
+                    title: ev.target.value,
                   },
-                  lang
+                  lang,
                 ),
-                uischema
-              )
+                uischema,
+              );
             }}
             className='form-title'
           />
@@ -353,11 +353,11 @@ export default function FormBuilder({
                 stringify(
                   {
                     ...schemaData,
-                    description: ev.target.value
+                    description: ev.target.value,
                   },
-                  lang
+                  lang,
                 ),
-                uischema
+                uischema,
               )
             }
             className='form-description'
@@ -373,11 +373,11 @@ export default function FormBuilder({
               onChange: (newSchema, newUiSchema) =>
                 onChange(
                   stringify(newSchema, lang),
-                  stringify(newUiSchema, lang)
+                  stringify(newUiSchema, lang),
                 ),
               definitionData: schemaData.definitions,
               definitionUi: uiSchemaData.definitions,
-              categoryHash
+              categoryHash,
             })
           }
           className='form-body'
@@ -394,7 +394,7 @@ export default function FormBuilder({
                   onChange: (newSchema, newUiSchema) =>
                     onChange(
                       stringify(newSchema, lang),
-                      stringify(newUiSchema, lang)
+                      stringify(newUiSchema, lang),
                     ),
                   definitionData: schemaData.definitions,
                   definitionUi: uiSchemaData.definitions,
@@ -405,7 +405,7 @@ export default function FormBuilder({
                   mods,
                   categoryHash,
                   Card,
-                  Section
+                  Section,
                 }).map((element: any, index) => (
                   <Draggable
                     key={element.key}
@@ -440,12 +440,12 @@ export default function FormBuilder({
                 onChange: (newSchema, newUiSchema) =>
                   onChange(
                     stringify(newSchema, lang),
-                    stringify(newUiSchema, lang)
+                    stringify(newUiSchema, lang),
                   ),
                 definitionData: schemaData.definitions,
                 definitionUi: uiSchemaData.definitions,
-                categoryHash
-              })
+                categoryHash,
+              });
             } else if (choice === 'section') {
               addSectionObj({
                 schema: schemaData,
@@ -453,12 +453,12 @@ export default function FormBuilder({
                 onChange: (newSchema, newUiSchema) =>
                   onChange(
                     stringify(newSchema, lang),
-                    stringify(newUiSchema, lang)
+                    stringify(newUiSchema, lang),
                   ),
                 definitionData: schemaData.definitions,
                 definitionUi: uiSchemaData.definitions,
-                categoryHash
-              })
+                categoryHash,
+              });
             }
           }}
           hidden={
@@ -468,5 +468,5 @@ export default function FormBuilder({
         />
       </div>
     </div>
-  )
+  );
 }

@@ -1,15 +1,15 @@
 // @flow
-import * as React from 'react'
-import { createUseStyles } from 'react-jss'
-import CardGallery from './CardGallery'
+import * as React from 'react';
+import { createUseStyles } from 'react-jss';
+import CardGallery from './CardGallery';
 import {
   parse,
   stringify,
   propagateDefinitionChanges,
-  generateCategoryHash
-} from './utils'
-import DEFAULT_FORM_INPUTS from './defaults/defaultFormInputs'
-import type { Mods } from './types'
+  generateCategoryHash,
+} from './utils';
+import DEFAULT_FORM_INPUTS from './defaults/defaultFormInputs';
+import type { Mods } from './types';
 
 const useStyles = createUseStyles({
   preDefinedGallery: {
@@ -17,28 +17,28 @@ const useStyles = createUseStyles({
     'flex-direction': 'column',
     'text-align': 'center',
     '& i': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '& .fa-question-circle': {
-      color: 'gray'
+      color: 'gray',
     },
     '& .fa-asterisk': {
       'font-size': '.9em',
-      color: 'green'
+      color: 'green',
     },
     '& .form_footer': {
       marginTop: '1em',
       textAlign: 'center',
-      '& i': { cursor: 'pointer', color: '$green', fontSize: '1.5em' }
+      '& i': { cursor: 'pointer', color: '$green', fontSize: '1.5em' },
     },
     '& .fa-plus-square': {
       color: 'green',
       'font-size': '1.5em',
-      margin: '0 auto'
+      margin: '0 auto',
     },
     '& .card-container': {
       '&:hover': {
-        border: '1px solid green'
+        border: '1px solid green',
       },
       width: '70%',
       'min-width': '400px',
@@ -47,7 +47,7 @@ const useStyles = createUseStyles({
       'border-radius': '4px',
       'background-color': 'white',
       '& .toggle-collapse': {
-        margin: '0.25em .5em 0 .5em !important'
+        margin: '0.25em .5em 0 .5em !important',
       },
       '& h4': {
         width: '100%',
@@ -55,34 +55,34 @@ const useStyles = createUseStyles({
         display: 'inline-block',
         color: '#138AC2',
         margin: '0.25em .5em 0 .5em',
-        'font-size': '18px'
+        'font-size': '18px',
       },
       '& .d-flex': {
-        'border-bottom': '1px solid gray'
+        'border-bottom': '1px solid gray',
       },
       '& .label': {
-        float: 'left'
+        float: 'left',
       },
       '& .arrows': {
         'text-align': 'right',
         float: 'right',
         '& .fa-trash': {
           border: '1px solid #DE5354',
-          color: '#DE5354'
+          color: '#DE5354',
         },
         '& .fa': {
           'border-radius': '4px',
           padding: '.25em',
-          margin: '0 .5em 0 0'
-        }
-      }
+          margin: '0 .5em 0 0',
+        },
+      },
     },
     '& .card-requirements': {
-      border: '1px dashed black'
+      border: '1px dashed black',
     },
     '& .section-container': {
       '&:hover': {
-        border: '1px solid green'
+        border: '1px solid green',
       },
       display: 'block',
       width: '90%',
@@ -92,7 +92,7 @@ const useStyles = createUseStyles({
       'border-radius': '4px',
       'background-color': 'white',
       '& .toggle-collapse': {
-        margin: '0.25em .5em 0 .5em !important'
+        margin: '0.25em .5em 0 .5em !important',
       },
       '& h4': {
         width: '100%',
@@ -100,41 +100,41 @@ const useStyles = createUseStyles({
         display: 'inline-block',
         color: '#138AC2',
         margin: '0.25em .5em 0 .5em',
-        'font-size': '18px'
+        'font-size': '18px',
       },
       '& .d-flex': {
-        'border-bottom': '1px solid var(--gray)'
+        'border-bottom': '1px solid var(--gray)',
       },
       '& .label': {
-        float: 'left'
+        float: 'left',
       },
       '& .arrows': {
         'text-align': 'right',
         float: 'right',
         '& .fa-trash': {
           border: '1px solid #DE5354',
-          color: '#DE5354'
+          color: '#DE5354',
         },
         '& .fa': {
           'border-radius': '4px',
           padding: '.25em',
-          margin: '0 .5em 0 0'
-        }
-      }
+          margin: '0 .5em 0 0',
+        },
+      },
     },
     '& .section-dependent': {
-      border: '1px dashed gray'
+      border: '1px dashed gray',
     },
     '& .section-requirements': {
-      border: '1px dashed black'
+      border: '1px dashed black',
     },
     '& .fa-pencil, & .fa-arrow-up, & .fa-arrow-down': {
       border: '1px solid #1d71ad',
-      color: '#1d71ad'
+      color: '#1d71ad',
     },
     '& .modal-body': {
       maxHeight: '500px',
-      overflowY: 'scroll'
+      overflowY: 'scroll',
     },
     '& .card-container:hover': { border: '1px solid var(--green)' },
     '& .card-dependent': { border: '1px dashed var(--gray)' },
@@ -142,69 +142,69 @@ const useStyles = createUseStyles({
       cursor: 'pointer',
       display: 'block',
       color: '$green',
-      fontSize: '1.5em'
+      fontSize: '1.5em',
     },
 
-    '& .section-container:hover': { border: '1px solid var(--green)' }
-  }
-})
+    '& .section-container:hover': { border: '1px solid var(--green)' },
+  },
+});
 
 export default function PreDefinedGallery({
   schema,
   uischema,
   onChange,
   lang,
-  mods
+  mods,
 }: {
   schema: string,
   uischema: string,
   onChange: (string, string) => any,
   lang: string,
-  mods?: Mods
+  mods?: Mods,
 }) {
-  const classes = useStyles()
-  const schemaData = (parse(schema, lang): { [string]: any }) || {}
-  const uiSchemaData = (parse(uischema, lang): { [string]: any }) || {}
+  const classes = useStyles();
+  const schemaData = (parse(schema, lang): { [string]: any }) || {};
+  const uiSchemaData = (parse(uischema, lang): { [string]: any }) || {};
   const allFormInputs = {
     ...DEFAULT_FORM_INPUTS,
-    ...(mods && mods.customFormInputs)
-  }
-  const categoryHash = generateCategoryHash(allFormInputs)
+    ...(mods && mods.customFormInputs),
+  };
+  const categoryHash = generateCategoryHash(allFormInputs);
 
   React.useEffect(() => {
     if (!uiSchemaData.definitions) {
       // eslint-disable-next-line no-console
-      console.log('Parsing UI schema to assign UI for definitions')
+      console.log('Parsing UI schema to assign UI for definitions');
       // need to create definitions from scratch
-      const references = []
+      const references = [];
       // recursively search for all $refs in the schemaData
       const findRefs = (name, schemaObject) => {
-        if (!schemaObject) return
+        if (!schemaObject) return;
         if (typeof schemaObject === 'object')
           Object.keys(schemaObject).forEach((key) => {
             if (typeof key === 'string') {
-              if (key === '$ref') references.push(name)
-              findRefs(key, schemaObject[key])
+              if (key === '$ref') references.push(name);
+              findRefs(key, schemaObject[key]);
             }
-          })
+          });
         if (Array.isArray(schemaObject))
           schemaObject.forEach((innerObj) => {
-            findRefs(name, innerObj)
-          })
-      }
+            findRefs(name, innerObj);
+          });
+      };
 
-      findRefs('root', schemaData)
+      findRefs('root', schemaData);
 
-      uiSchemaData.definitions = {}
-      const referenceSet = new Set(references)
+      uiSchemaData.definitions = {};
+      const referenceSet = new Set(references);
       Object.keys(uiSchemaData).forEach((uiProp) => {
         if (referenceSet.has(uiProp))
-          uiSchemaData.definitions[uiProp] = uiSchemaData[uiProp]
-      })
+          uiSchemaData.definitions[uiProp] = uiSchemaData[uiProp];
+      });
 
-      onChange(stringify(schemaData, lang), stringify(uiSchemaData, lang))
+      onChange(stringify(schemaData, lang), stringify(uiSchemaData, lang));
     }
-  }, [uischema, schema])
+  }, [uischema, schema]);
   return (
     <div className={classes.preDefinedGallery}>
       <CardGallery
@@ -213,10 +213,10 @@ export default function PreDefinedGallery({
         language={lang}
         onChange={(
           newDefinitions: { [string]: any },
-          newDefinitionsUi: { [string]: any }
+          newDefinitionsUi: { [string]: any },
         ) => {
-          schemaData.definitions = newDefinitions
-          uiSchemaData.definitions = newDefinitionsUi
+          schemaData.definitions = newDefinitions;
+          uiSchemaData.definitions = newDefinitionsUi;
           // propagate changes in ui definitions to all relavant parties in main schema
 
           propagateDefinitionChanges(
@@ -225,14 +225,14 @@ export default function PreDefinedGallery({
             (newSchema, newUiSchema) =>
               onChange(
                 stringify(newSchema, lang),
-                stringify(newUiSchema, lang)
+                stringify(newUiSchema, lang),
               ),
-            categoryHash
-          )
+            categoryHash,
+          );
         }}
         mods={mods}
         categoryHash={categoryHash}
       />
     </div>
-  )
+  );
 }

@@ -1,11 +1,11 @@
 // @flow
 
-import React from 'react'
-import Select from 'react-select'
-import { Input } from 'reactstrap'
-import FBCheckbox from '../checkbox/FBCheckbox'
-import Tooltip from '../Tooltip'
-import type { Parameters } from '../types'
+import React from 'react';
+import Select from 'react-select';
+import { Input } from 'reactstrap';
+import FBCheckbox from '../checkbox/FBCheckbox';
+import Tooltip from '../Tooltip';
+import type { Parameters } from '../types';
 
 const formatDictionary = {
   '': 'None',
@@ -14,8 +14,8 @@ const formatDictionary = {
   hostname: 'Hostname',
   time: 'Time',
   uri: 'URI',
-  regex: 'Regular Expression'
-}
+  regex: 'Regular Expression',
+};
 
 const autoDictionary = {
   '': 'None',
@@ -23,16 +23,16 @@ const autoDictionary = {
   username: 'User Name',
   password: 'Password',
   'street-address': 'Street Address',
-  country: 'Country'
-}
+  country: 'Country',
+};
 
 // specify the inputs required for a string type object
 function CardShortAnswerParameterInputs({
   parameters,
-  onChange
+  onChange,
 }: {
   parameters: Parameters,
-  onChange: (newParams: Parameters) => void
+  onChange: (newParams: Parameters) => void,
 }) {
   return (
     <div>
@@ -45,8 +45,8 @@ function CardShortAnswerParameterInputs({
         onChange={(ev: SyntheticInputEvent<HTMLInputElement>) => {
           onChange({
             ...parameters,
-            minLength: parseInt(ev.target.value, 10)
-          })
+            minLength: parseInt(ev.target.value, 10),
+          });
         }}
         className='card-modal-number'
       />
@@ -59,8 +59,8 @@ function CardShortAnswerParameterInputs({
         onChange={(ev: SyntheticInputEvent<HTMLInputElement>) => {
           onChange({
             ...parameters,
-            maxLength: parseInt(ev.target.value, 10)
-          })
+            maxLength: parseInt(ev.target.value, 10),
+          });
         }}
         className='card-modal-number'
       />
@@ -86,8 +86,8 @@ function CardShortAnswerParameterInputs({
         onChange={(ev: SyntheticInputEvent<HTMLInputElement>) => {
           onChange({
             ...parameters,
-            pattern: ev.target.value
-          })
+            pattern: ev.target.value,
+          });
         }}
         className='card-modal-text'
       />
@@ -110,19 +110,19 @@ function CardShortAnswerParameterInputs({
             ? formatDictionary[
                 typeof parameters.format === 'string' ? parameters.format : ''
               ]
-            : 'None'
+            : 'None',
         }}
         placeholder='Format'
         key='format'
         options={Object.keys(formatDictionary).map((key) => ({
           value: key,
-          label: formatDictionary[key]
+          label: formatDictionary[key],
         }))}
         onChange={(val: any) => {
           onChange({
             ...parameters,
-            format: val.value
-          })
+            format: val.value,
+          });
         }}
         className='card-modal-select'
       />
@@ -155,19 +155,19 @@ function CardShortAnswerParameterInputs({
                   ? parameters['ui:autocomplete']
                   : ''
               ]
-            : 'None'
+            : 'None',
         }}
         placeholder='Auto Complete'
         key='ui:autocomplete'
         options={Object.keys(autoDictionary).map((key) => ({
           value: key,
-          label: autoDictionary[key]
+          label: autoDictionary[key],
         }))}
         onChange={(val: any) => {
           onChange({
             ...parameters,
-            'ui:autocomplete': val.value
-          })
+            'ui:autocomplete': val.value,
+          });
         }}
         className='card-modal-select'
       />
@@ -178,8 +178,8 @@ function CardShortAnswerParameterInputs({
               ...parameters,
               'ui:autofocus': parameters['ui:autofocus']
                 ? parameters['ui:autofocus'] !== true
-                : true
-            })
+                : true,
+            });
           }}
           isChecked={
             parameters['ui:autofocus']
@@ -190,15 +190,15 @@ function CardShortAnswerParameterInputs({
         />
       </div>
     </div>
-  )
+  );
 }
 
 function ShortAnswerField({
   parameters,
-  onChange
+  onChange,
 }: {
   parameters: Parameters,
-  onChange: (newParams: Parameters) => void
+  onChange: (newParams: Parameters) => void,
 }) {
   return (
     <React.Fragment>
@@ -213,15 +213,15 @@ function ShortAnswerField({
         className='card-text'
       />
     </React.Fragment>
-  )
+  );
 }
 
 function Password({
   parameters,
-  onChange
+  onChange,
 }: {
   parameters: Parameters,
-  onChange: (newParams: Parameters) => void
+  onChange: (newParams: Parameters) => void,
 }) {
   return (
     <React.Fragment>
@@ -236,7 +236,7 @@ function Password({
         className='card-text'
       />
     </React.Fragment>
-  )
+  );
 }
 
 const shortAnswerInput = {
@@ -244,31 +244,31 @@ const shortAnswerInput = {
     displayName: 'Short Answer',
     matchIf: [
       {
-        types: ['string']
-      }
+        types: ['string'],
+      },
     ],
     defaultDataSchema: {},
     defaultUiSchema: {},
     type: 'string',
     cardBody: ShortAnswerField,
-    modalBody: CardShortAnswerParameterInputs
+    modalBody: CardShortAnswerParameterInputs,
   },
   password: {
     displayName: 'Password',
     matchIf: [
       {
         types: ['string'],
-        widget: 'password'
-      }
+        widget: 'password',
+      },
     ],
     defaultDataSchema: {},
     defaultUiSchema: {
-      'ui:widget': 'password'
+      'ui:widget': 'password',
     },
     type: 'string',
     cardBody: Password,
-    modalBody: CardShortAnswerParameterInputs
-  }
-}
+    modalBody: CardShortAnswerParameterInputs,
+  },
+};
 
-export default shortAnswerInput
+export default shortAnswerInput;

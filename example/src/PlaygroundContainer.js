@@ -1,34 +1,34 @@
 // @flow
 
-import React from "react";
+import React from 'react';
 
-import JsonSchemaFormEditor from "./JsonSchemaFormEditor";
-import { createUseStyles } from "react-jss";
+import JsonSchemaFormEditor from './JsonSchemaFormEditor';
+import { createUseStyles } from 'react-jss';
 
 const useStyles = createUseStyles({
   header: {
-    "& h1": {
-      textAlign: "center",
-      margin: "1em",
+    '& h1': {
+      textAlign: 'center',
+      margin: '1em',
     },
-    "& p": {
-      marginRight: "5em",
-      marginLeft: "5em",
+    '& p': {
+      marginRight: '5em',
+      marginLeft: '5em',
     },
   },
 });
 
 export default function PlaygroundContainer({ title }: { title: string }) {
-  const [schema, setSchema] = React.useState("");
-  const [uischema, setUischema] = React.useState("");
+  const [schema, setSchema] = React.useState('');
+  const [uischema, setUischema] = React.useState('');
   const classes = useStyles();
   return (
-    <div className="service-playground">
+    <div className='service-playground'>
       <div className={classes.header}>
         <h1>{title}</h1>
         <p>
-          Demo app for the{" "}
-          <a href="https://github.com/ginkgobioworks/react-jsonschema-form-editor">
+          Demo app for the{' '}
+          <a href='https://github.com/ginkgobioworks/react-jsonschema-form-editor'>
             React JSON Schema Form Editor
           </a>
           , which allows a user to visually build a form and obtain the JSON
@@ -45,17 +45,17 @@ export default function PlaygroundContainer({ title }: { title: string }) {
         </p>
       </div>
       <JsonSchemaFormEditor
-        lang={"yaml"}
+        lang={'json'}
         schema={schema}
         uischema={uischema}
-        schemaTitle="Data Schema"
-        uischemaTitle="UI Schema"
+        schemaTitle='Data Schema'
+        uischemaTitle='UI Schema'
         onChange={(newSchema: string, newUiSchema: string) => {
           setSchema(newSchema);
           setUischema(newUiSchema);
         }}
-        width="95%"
-        height="800px"
+        width='95%'
+        height='800px'
       />
     </div>
   );

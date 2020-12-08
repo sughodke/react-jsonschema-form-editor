@@ -1,7 +1,7 @@
-import { FormBuilder } from '.'
+import { FormBuilder } from '.';
 
 describe('FormBuilder', () => {
   it('is truthy', () => {
-    expect(FormBuilder).toBeTruthy()
-  })
-})
+    expect(FormBuilder).toBeTruthy();
+  });
+});
