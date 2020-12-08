@@ -1,5 +1,4 @@
 // @flow
-
 import React from 'react';
 import {
   Alert,
@@ -12,8 +11,8 @@ import {
 import Form from '@rjsf/core';
 import { FormBuilder, PreDefinedGallery } from 'react-jsonschema-form-editor';
 import Tabs from './tabs/Tabs';
-import { JsonEditor as Editor } from 'jsoneditor-react';
-import 'jsoneditor-react/es/editor.min.css';
+import JSONInput from 'react-json-editor-ajrm';
+import locale from 'react-json-editor-ajrm/locale/en';
 import ErrorBoundary from './ErrorBoundary';
 
 type Props = {
@@ -205,9 +204,11 @@ class JsonSchemaFormEditor extends React.Component<Props, State> {
                           errMessage={'Error parsing JSON Schema Form output'}
                         >
                           <h4>Output Data</h4>
-                          <Editor
-                            value={JSON.stringify(this.state.submissionData)}
-                            onChange={() => {}}
+                          <JSONInput
+                            id='a_unique_id'
+                            placeholder={this.state.submissionData}
+                            locale={locale}
+                            height='550px'
                           />
                         </ErrorBoundary>
                         <br />
@@ -238,10 +239,13 @@ class JsonSchemaFormEditor extends React.Component<Props, State> {
                   style={{
                     height: this.props.height ? this.props.height : '500px',
                     display: 'flex',
-                    'flex-direction': 'row',
+                    flexDirection: 'row',
                   }}
                 >
-                  <div style={{ margin: '1em' }} className='editor-container'>
+                  <div
+                    style={{ margin: '1em', width: '50em' }}
+                    className='editor-container'
+                  >
                     <ErrorBoundary
                       onErr={(err: string) => {
                         // if rendering initial value causes a crash
@@ -252,14 +256,24 @@ class JsonSchemaFormEditor extends React.Component<Props, State> {
                       errMessage={'Error parsing JSON Schema input'}
                     >
                       <h4>Data Schema</h4>
-                      <Editor
-                        value={this.props.schema}
-                        onChange={(data: any) => this.updateSchema(data)}
+                      <JSONInput
+                        id='data_schema'
+                        placeholder={
+                          this.props.schema ? JSON.parse(this.props.schema) : {}
+                        }
+                        locale={locale}
+                        height='550px'
+                        onChange={(data: any) =>
+                          this.updateSchema(JSON.stringify(data))
+                        }
                       />
                     </ErrorBoundary>
                     <br />
                   </div>
-                  <div style={{ margin: '1em' }} className='editor-container'>
+                  <div
+                    style={{ margin: '1em', width: '50em' }}
+                    className='editor-container'
+                  >
                     <ErrorBoundary
                       onErr={(err: string) => {
                         // if rendering initial value causes a crash
@@ -270,9 +284,18 @@ class JsonSchemaFormEditor extends React.Component<Props, State> {
                       errMessage={'Error parsing JSON UI Schema input'}
                     >
                       <h4>UI Schema</h4>
-                      <Editor
-                        value={this.props.uischema}
-                        onChange={(data: any) => this.updateUISchema(data)}
+                      <JSONInput
+                        id='ui_schema'
+                        placeholder={
+                          this.props.uischema
+                            ? JSON.parse(this.props.uischema)
+                            : {}
+                        }
+                        locale={locale}
+                        height='550px'
+                        onChange={(data: any) =>
+                          this.updateUISchema(JSON.stringify(data))
+                        }
                       />
                     </ErrorBoundary>
                   </div>
@@ -304,7 +327,6 @@ class JsonSchemaFormEditor extends React.Component<Props, State> {
               ),
             },
           ]}
-          preventRerender
         />
       </div>
     );

@@ -186,7 +186,7 @@ const useStyles = createUseStyles({
   },
   formBody: {
     display: 'flex',
-    'flex-direction': 'column',
+    flexDirection: 'column',
     '& .fa-pencil, & .fa-arrow-up, & .fa-arrow-down': {
       border: '1px solid #1d71ad',
       color: '#1d71ad',

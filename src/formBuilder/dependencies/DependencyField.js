@@ -24,7 +24,7 @@ const useStyles = createUseStyles({
         '& *': { textAlign: 'initial' },
         '& .card-enum-option': {
           display: 'flex',
-          'flex-direction': 'row',
+          flexDirection: 'row',
           '& input': {
             width: '80%',
             marginRight: '1em',

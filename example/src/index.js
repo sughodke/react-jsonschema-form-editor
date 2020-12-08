@@ -4,13 +4,13 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
-  <React.StrictMode>
+  <React.Fragment>
     <head>
       <link
         rel='stylesheet'
         href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'
         integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T'
-        crossorigin='anonymous'
+        crossOrigin='anonymous'
       />
       <link
         rel='stylesheet'
@@ -22,7 +22,7 @@ ReactDOM.render(
       />
     </head>
     <App />
-  </React.StrictMode>,
+  </React.Fragment>,
   document.getElementById('root'),
 );
 

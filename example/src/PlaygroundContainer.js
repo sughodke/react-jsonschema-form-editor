@@ -19,8 +19,8 @@ const useStyles = createUseStyles({
 });
 
 export default function PlaygroundContainer({ title }: { title: string }) {
-  const [schema, setSchema] = React.useState('');
-  const [uischema, setUischema] = React.useState('');
+  const [schema, setSchema] = React.useState('{}');
+  const [uischema, setUischema] = React.useState('{}');
   const classes = useStyles();
   return (
     <div className='service-playground'>

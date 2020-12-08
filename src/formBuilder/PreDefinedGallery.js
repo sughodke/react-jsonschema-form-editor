@@ -14,7 +14,7 @@ import type { Mods } from './types';
 const useStyles = createUseStyles({
   preDefinedGallery: {
     display: 'flex',
-    'flex-direction': 'column',
+    flexDirection: 'column',
     'text-align': 'center',
     '& i': {
       cursor: 'pointer',
