@@ -11,7 +11,7 @@ import {
 } from "reactstrap";
 import { safeLoad as yamlParse, safeDump as yamlStringify } from "js-yaml";
 //import Form from "react-jsonschema-form";
-import Form from "@rjsf/material-ui";
+import Form from "@rjsf/core";
 //import Form from "@rjsf/bootstrap-4";
 import {FormBuilder, PreDefinedGallery} from 'react-jsonschema-form-editor';
 import Tabs from "./tabs/Tabs";
