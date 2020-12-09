@@ -46,11 +46,9 @@ export default function Add({
 
   return (
     <div style={{ display: hidden ? 'none' : 'initial' }}>
-      <i
-        className='fa fa-plus-square card-add'
-        onClick={() => setPopoverOpen(true)}
-        id={`${name}_add`}
-      />
+      <a onClick={() => setPopoverOpen(true)} id={`${name}_add`}>
+        <i className='fa fa-plus-square card-add' />Add!
+      </a>
       <UncontrolledTooltip placement='top' target={`${name}_add`}>
         Create new form element
       </UncontrolledTooltip>

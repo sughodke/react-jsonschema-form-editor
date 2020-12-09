@@ -148,22 +148,28 @@ export default function Card({
               )}
             </span>
             <span className='arrows'>
-              <i
-                className='fa fa-arrow-up'
+              <a
                 id={`${componentProps.path}_moveupbiginfo`}
                 onClick={() => (onMoveUp ? onMoveUp() : {})}
+              >
+              <i
+                className='fa fa-arrow-up'
               />
+              </a>
               <UncontrolledTooltip
                 placement='top'
                 target={`${componentProps.path}_moveupbiginfo`}
               >
                 Move form element up
               </UncontrolledTooltip>
-              <i
-                className='fa fa-arrow-down'
+              <a
                 id={`${componentProps.path}_movedownbiginfo`}
                 onClick={() => (onMoveDown ? onMoveDown() : {})}
+              >
+              <i
+                className='fa fa-arrow-down'
               />
+              </a>
               <UncontrolledTooltip
                 placement='top'
                 target={`${componentProps.path}_movedownbiginfo`}
@@ -186,22 +192,24 @@ export default function Card({
           />
         </div>
         <div className={classes.cardInteractions}>
-          <i
+          <a
             id={`${componentProps.path}_editinfo`}
-            className='fa fa-pencil'
             onClick={() => setModalOpen(true)}
-          />
+          >
+            <i className='fa fa-pencil-alt' />
+          </a>
           <UncontrolledTooltip
             placement='top'
             target={`${componentProps.path}_editinfo`}
           >
             Additional configurations for this form element
           </UncontrolledTooltip>
-          <i
-            className='fa fa-trash'
+          <a
             id={`${componentProps.path}_trashinfo`}
             onClick={onDelete || (() => {})}
-          />
+          >
+            <i className='fa fa-trash' />
+          </a>
           <UncontrolledTooltip
             placement='top'
             target={`${componentProps.path}_trashinfo`}

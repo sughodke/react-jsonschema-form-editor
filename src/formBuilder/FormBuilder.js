@@ -43,7 +43,7 @@ const useStyles = createUseStyles({
         border: '1px solid green',
       },
       display: 'block',
-      width: '70%',
+      // width: '70%',
       'min-width': '400px',
       margin: '2em auto',
       border: '1px solid gray',
@@ -164,7 +164,7 @@ const useStyles = createUseStyles({
     'background-color': '#EBEBEB',
     border: '1px solid #858F96',
     'border-radius': '4px',
-    width: '70%',
+    // width: '70%',
     padding: '10px',
     '& div': {
       width: '30%',
@@ -196,7 +196,7 @@ const useStyles = createUseStyles({
       overflowY: 'scroll',
     },
     '& .card-container': {
-      width: '70%',
+      // width: '70%',
       minWidth: '400px',
       margin: '2em auto',
       border: '1px solid var(--gray)',
